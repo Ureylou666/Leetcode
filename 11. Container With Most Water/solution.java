@@ -1,0 +1,21 @@
+private static int No_0011(int[] height) {
+        int i = 0;
+        int j = height.length -1;
+        if (j == 1) {
+            return Math.min(height[i], height[j]);
+        }
+        int max = 0;
+
+        do {
+            if ( Math.min(height[i], height[j]) * (j-i) > max ) {
+                max = Math.min(height[i], height[j]) * (j-i);
+            }
+            if (height[i] < height[j]) {
+                i++;
+            } else {
+                j--;
+            }
+        } while (i < j);
+        return max;
+    }
+}
