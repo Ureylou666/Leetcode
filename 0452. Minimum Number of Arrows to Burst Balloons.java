@@ -1,4 +1,40 @@
 class Solution {
+    public static int findMinArrowShots(int[][] points) {
+        List<int[]> maps = new ArrayList<>();
+        boolean h;
+        for (int[] point : points) {
+            h = false;
+            for (int[] map : maps) {
+                if ( (point[0] < map[0]) && (point[1] > map[0]) && (point[1]<=map[1]) ) {
+                    h = true;
+                    maps.remove(map);
+                    maps.add( new int[]{map[0], point[1]});
+                    break;
+                }
+                if ( (point[0] >= map[0]) && (point[1]<=map[1]) ) {
+                    h = true;
+                    maps.remove(map);
+                    maps.add( new int[]{point[0], point[1]});
+                    break;
+                }
+                if ( (point[0] >= map[0]) && (point[0] <= map[1]) && (point[1] > map[1]) ) {
+                    h = true;
+                    maps.remove(map);
+                    maps.add( new int[]{point[0], map[1]});
+                    break;
+                }
+                if ( (point[0] <= map[0]) && (point[1] >= map[1]) ) {
+                    h = true;
+                    break;
+                }
+            }
+            if (!h) maps.add(point);
+        }
+        return maps.size();
+    }
+}
+--------------------------------------------------------------------------------------------------------------------------------------------
+class Solution {
     public int findMinArrowShots(int[][] points) {
         if (points.length == 0) {
             return 0;
