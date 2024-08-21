@@ -1,0 +1,16 @@
+/**
+    * @Description: https://leetcode.com/problems/jump-game/
+    * @Author: Urey Lou
+    * @Date: 2024-08-20
+    * @Param: [nums]
+    * @return: boolean
+    */
+
+    public static boolean canJump(int[] nums) {
+        boolean[] dp = new boolean[nums.length];
+        dp[0] = true;
+        for (int i = 0; i<nums.length; i++)
+            if (dp[i])
+                for (int j=0; j<=nums[i]; j++) if (i+j < nums.length) dp[i+j] = true;
+        return dp[nums.length-1];
+    }
