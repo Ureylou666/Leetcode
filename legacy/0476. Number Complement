@@ -1,0 +1,18 @@
+/**
+    * @Description: https://leetcode.com/problems/number-complement/description/
+    * @Author: Urey Lou
+    * @Date: 2024-08-22
+    * @Param: [num]
+    * @return: int
+    */
+    public static int findComplement(int num) {
+        int k =1;
+        for (int i=0;i<=32;i++) {
+            if (k-1>num) {
+                return k-num-1;
+            }
+            if (k-1 == num) return 0;
+            k *= 2;
+        }
+        return 0;
+    }

@@ -1,11 +1,9 @@
 class main {
 
     public static void main (String args[]) {
-        System.out.println(  stoneGameII(new int[]{1,2,3,4,100}) );
+        System.out.println(  findComplement(12 ));
     }
 
-
-    
     /**
     * @Description: https://leetcode.com/problems/stone-game-ii/description/
     * @Author: Urey Lou
@@ -13,10 +11,10 @@ class main {
     * @Param: [piles]
     * @return: int
     */
-    public static int stoneGameII(int[] piles) {
+   //public static int stoneGameII(int[] piles) {
 
 
-    }
+   //}
 
 
 }
