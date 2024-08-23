@@ -1,0 +1,52 @@
+/**
+    * @Description: https://leetcode.com/problems/fraction-addition-and-subtraction/
+    * @Author: Urey Lou
+    * @Date: 2024-08-23
+    * @Param: [expression]
+    * @return: java.lang.String
+    */
+
+    public static String fractionAddition(String expression) {
+        int a1 = 0, b1 = 1;
+        int a2,b2;
+        int n = 0;
+        boolean negative = false;
+        char[] exp = expression.toCharArray();
+        if (exp[0] == '-') {
+            negative = true;
+            n++;
+        }
+        while (n < exp.length) {
+            if (exp[n] == '-') {
+                negative = true;
+                n++;
+            } else if (exp[n] == '+') {
+                negative = false;
+                n++;
+            }
+            a2 = 0;
+            while (exp[n] != '/' ) {
+                a2 = a2 * 10 + (exp[n] - '0');
+                n++;
+            }
+            if (negative) a2 = -a2;
+            n++;
+            b2 = 0;
+            while ( n < exp.length && exp[n] != '+' && exp[n] != '-') {
+                b2 = b2 * 10 + (exp[n] - '0');
+                n++;
+            }
+            a1 = a1 * b2 + a2 * b1;
+            b1 = b1 * b2;
+            int temp = gcd( Math.abs(a1) ,b1);
+            a1 = a1 / temp;
+            b1 = b1 / temp;
+        }
+        return a1+"/"+b1;
+    }
+
+    private static int gcd(int x, int y) {
+        while (x > 0 && y > 0)
+            if (x > y) x = x % y; else y = y % x;
+        return x+y;
+    }

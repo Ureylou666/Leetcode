@@ -1,7 +1,7 @@
 class main {
 
     public static void main (String args[]) {
-        System.out.println(  findComplement(12 ));
+        System.out.println(  fractionAddition("1/3-1/2" ));
     }
 
     /**
