@@ -1,0 +1,105 @@
+/**
+    * @Description: https://leetcode.com/problems/find-the-closest-palindrome/
+    * @Author: Urey Lou
+    * @Date: 2024-08-24
+    * @Param: [n]
+    * @return: java.lang.String
+    */
+    public static String nearestPalindromic(String n) {
+        int[] a1 = new int[n.length()];
+        int[] b1 = new int[n.length()];
+        int[] temp =new int[n.length()];
+        int[] result = new int[n.length()];
+        int[] answer = new int[n.length()];
+        StringBuilder sb = new StringBuilder();
+        boolean h = true;
+        // transfer to int[]
+        for (int i=0;i<n.length();i++) a1[i] = n.charAt(i) - '0';
+
+        // n = [1,9]
+        if (n.length() == 1) return String.valueOf (n.charAt(0) - '1');
+        // n = 10^x || n = 10^x+1
+        if (a1[0] == 1 && ( a1[a1.length-1] == 0 || a1[a1.length-1]== 1 ) ) {
+            for (int i = 1; i<a1.length-1; i++) if (a1[i] != 0) h =false;
+            if (h) {
+                sb.append("9".repeat(a1.length - 1));
+                return sb.toString();
+            }
+
+        }
+        // n = 10^x-1;
+        h = true;
+        for (int i : a1) if (i != 9) h =false;
+        if (h) {
+            sb.append(1);
+            sb.append("0".repeat(a1.length-1));
+            sb.append(1);
+            return sb.toString();
+        }
+        // n = palindromic
+        h = true;
+        for (int i= 0; i< n.length(); i++) if (a1[i] != a1[n.length()-1-i]) h = false;
+        // -1
+        Arrays.fill(b1, 0);
+        for (int i=0; i<a1.length/2+a1.length%2; i++) b1[i] = a1[i];
+        int k = a1.length/2+a1.length%2-1;
+        while (b1[k] -1 < 0) {
+            b1[k] = b1[k] + 9;
+            k--;
+        }
+        b1[k]--;
+        for (int i=0; i<= b1.length/2; i++) b1[b1.length-1-i] = b1[i];
+        if (compare2int(a1, b1)) temp = minus2int(a1,b1); else temp = minus2int(b1, a1);
+        for (int i=0;i<b1.length;i++) answer[i] = b1[i];
+        for (int i=0;i<b1.length;i++) result[i] = temp[i];
+        // same
+        if (!h) {
+            Arrays.fill(b1, 0);
+            for (int i=0; i< a1.length/2+a1.length%2; i++) b1[i] = a1[i];
+            for (int i=0; i<= b1.length/2; i++) b1[b1.length-1-i] = b1[i];
+            if (compare2int(a1, b1)) temp = minus2int(a1,b1); else temp = minus2int(b1, a1);
+            if (compare2int(result, temp)) {
+                for (int i=0;i<b1.length;i++) answer[i] = b1[i];
+                for (int i=0;i<b1.length;i++) result[i] = temp[i];
+            }
+        }
+        // +1
+        Arrays.fill(b1, 0);
+        for (int i=0; i<a1.length/2+a1.length%2; i++) b1[i] = a1[i];
+        int h1 = 10;
+        k = a1.length/2+a1.length%2-1;
+        do {
+            h1 = h1 / 10;
+            h1 = b1[k] + h1;
+            b1[k] = h1 % 10;
+            k--;
+        } while (h1 > 9);
+        for (int i=0; i<= b1.length/2; i++) b1[b1.length-1-i] = b1[i];
+        if (compare2int(a1, b1)) temp = minus2int(a1,b1); else temp = minus2int(b1, a1);
+        if (compare2int(result, temp)) {
+            for (int i=0;i<b1.length;i++) answer[i] = b1[i];
+            for (int i=0;i<b1.length;i++) result[i] = temp[i];
+        }
+        sb = new StringBuilder();
+        for (int i:answer) sb.append(i);
+        return sb.toString();
+    }
+
+    private static int[] minus2int(int[] x1, int[] x2) {
+        int[] z = new int[x1.length];
+        int h1 = 0, h2 = 0;
+        for (int i = x1.length-1; i >= 0 ; i--) {
+            h2 = 0 ;
+            if ( x1[i] - x2[i] - h1 < 0 ) {
+                h2 = 1;
+                z[i] = x1[i] + 10 - x2[i] - h1;
+            } else z[i] = x1[i] - x2[i] - h1;
+            h1 = h2;
+        }
+        return z;
+    }
+
+    private static boolean compare2int(int[] x1, int[] x2){
+        for (int i = 0 ; i < x1.length; i++) if (x1[i]>x2[i]) return true; else if (x1[i] < x2[i]) return false;
+        return false;
+    }
