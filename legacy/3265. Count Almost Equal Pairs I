@@ -1,0 +1,44 @@
+/**
+    * @Description: https://leetcode.com/contest/weekly-contest-412/problems/count-almost-equal-pairs-i/
+    * @Author: Urey Lou
+    * @Date: 2024-08-24
+    * @Param:
+    * @return:
+    */
+    public static int countPairs(int[] nums) {
+        int result = 0, temp = 0, k = 0 , n , m;
+        int[] tempNum1 = new int[6];
+        int[] tempNum2 = new int[6];
+        HashMap<Integer, Integer> map = new HashMap<>();
+        Set<Integer> checked = new HashSet<>();
+        Set<Integer> numbers = new HashSet<>();
+        for (int i: nums) map.put(i, map.getOrDefault(i, 0) +1);
+
+        for (int key : map.keySet()) if ( !checked.contains(key) ){
+            m = map.get(key);
+            checked.add(key);
+            if (m > 1) result = result + m * (m-1);
+            k = key;
+            n=5;
+            Arrays.fill(tempNum1, 0);
+            while (k>0) {
+                tempNum1[n] = k % 10;
+                k = k / 10;
+                n--;
+            }
+            numbers.clear();;
+            for (int p = 0; p < 5; p++) {
+                for (int q = p+1; q < 6; q++) if (tempNum1[p] != 0 || tempNum1[q] !=0)
+                {
+                    for (int xx = 0; xx < 6; xx++) tempNum2[xx] = tempNum1[xx];
+                    temp = tempNum2[p];
+                    tempNum2[p] = tempNum2[q];
+                    tempNum2[q] = temp;
+                    numbers.add(tempNum2[5] + 10 * tempNum2[4] + 100 * tempNum2[3] + 1000 * tempNum2[2] + 10000 * tempNum2[1] + 100000 * tempNum2[0]);
+                }
+            }
+            numbers.remove(key);
+            for (int xx:numbers) if (map.containsKey(xx)) result = result + m * map.get(xx);
+        }
+        return result / 2;
+    }
