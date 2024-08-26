@@ -46,7 +46,24 @@ class main {
     */
 
     public static List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> find = new ArrayList<>();
+        return recursive(root, find);
+    }
 
+    private static List<Integer> recursive(TreeNode top, List<Integer> list) {
+        if (top.left == null && top.right == null) {
+            list.add(top.val);
+            return list;
+        }
+        if (top.left != null) {
+           list =  recursive(top.left, list);
+           list.add(top.val);
+        }
+        if (top.right != null) {
+            list =  recursive(top.right, list);
+            list.add(top.val);
+        }
+        return list;
     }
 
 }
