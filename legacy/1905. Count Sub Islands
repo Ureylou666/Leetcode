@@ -1,0 +1,64 @@
+ /**
+    * @Description: https://leetcode.com/problems/count-sub-islands/?envType=daily-question&envId=2024-08-28
+    * @Author: Urey Lou
+    * @Date: 2024-08-28
+    * @Param: [grid1, grid2]
+    * @return: int
+ */
+
+class Solution {
+    static class pair {
+        int x;
+        int y;
+
+        public pair(int i, int j) {
+            x = i;
+            y = j;
+        }
+    }
+
+    public static int countSubIslands(int[][] grid1, int[][] grid2) {
+        int[][] edged1 = edgingGrid(grid1);
+        int[][] edged2 = edgingGrid(grid2);
+        List< List<pair> > islands = new ArrayList<>();
+        List<pair> island = new ArrayList<>();
+        for (int i = 0; i< edged1.length; i++)
+            for (int j = 0; j< edged1[0].length; j++) if (edged1[i][j] == 1) {
+                island = getIsland(edged1, i,j, new ArrayList<>());
+                island.clear();
+            }
+        for (int i = 0; i< edged2.length; i++)
+           for (int j = 0; j< edged2[0].length; j++) if (edged2[i][j] == 1) {
+               island = getIsland(edged2, i,j, new ArrayList<>());
+               islands.add( new ArrayList<>(island));
+               island.clear();
+           }
+        int result = 0;
+        for (List<pair> check : islands) {
+            boolean h = true;
+            for (pair n : check) if (edged1[n.x][n.y] != -1) h=false;
+            if (h) result++;
+        }
+        return result;
+    }
+
+    private static int[][] edgingGrid(int[][] grid) {
+        int[][] result = new int[grid.length+2][grid[0].length+2];
+        for (int i= 0; i<grid.length; i++) Arrays.fill(result[i], 0);
+        for (int i = 0; i < grid.length; i++ )
+            for (int j = 0; j < grid[0].length; j++) result[i+1][j+1] = grid[i][j];
+        return result;
+    }
+
+    private static List<pair> getIsland(int[][] map, int i, int j, List<pair> re) {
+        if (map[i][j] == 1) {
+            map[i][j] = -1;
+            re.add( new pair(i,j));
+            getIsland(map,i+1,j,re);
+            getIsland(map,i-1,j,re);
+            getIsland(map,i,j+1,re);
+            getIsland(map,i,j-1,re);
+        }
+        return re;
+    }
+}
