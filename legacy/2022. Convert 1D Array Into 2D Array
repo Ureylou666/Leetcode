@@ -1,0 +1,19 @@
+/**
+    * @Description: https://leetcode.com/problems/convert-1d-array-into-2d-array/?envType=daily-question&envId=2024-09-01
+    * @Author: Urey Lou
+    * @Date: 2024-09-02
+    * @Param: [original, m, n]
+    * @return: int[][]
+    */
+
+class Solution {
+    public int[][] construct2DArray(int[] original, int m, int n) {
+        if (m * n != original.length) {
+            return new int[][]{};
+        }
+        int[][] result =  new int[m][n];
+        for (int i=0;i<m;i++)
+            for (int j=0; j<n; j++) result[i][j] = original[i*n+j];
+        return result;
+    }
+}

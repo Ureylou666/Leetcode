@@ -1,0 +1,26 @@
+/**
+    * @Description: https://leetcode.com/problems/find-the-student-that-will-replace-the-chalk/?envType=daily-question&envId=2024-09-03
+    * @Author: Urey Lou
+    * @Date: 2024-09-02
+    * @Param: [chalk, k]
+    * @return: int
+*/
+class Solution {
+    public int chalkReplacer(int[] chalk, int k) {
+        int sum = 0, i = 0;
+        while (i<chalk.length) {
+            sum += chalk[i];
+            if (sum > k) return i;
+            i++;
+        }
+        System.out.println(sum);
+        k = k % sum;
+        i=0;
+        if (k==0) return 0;
+        while (chalk[i] <= k) {
+            k = k - chalk[i];
+            i++;
+        }
+        return i;
+    }
+}
