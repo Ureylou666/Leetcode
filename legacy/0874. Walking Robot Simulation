@@ -1,15 +1,5 @@
-import java.util.*;
-
-class main {
-
-    public static void main (String[] args) {
-        // String grid1 = "[[1,0,1,0,1],[1,1,1,1,1],[0,0,0,0,0],[1,1,1,1,1],[1,0,1,0,1]]";
-        // String grid2 = "[[0,0,0,0,0],[1,1,1,1,1],[0,1,0,1,0],[0,1,0,1,0],[1,0,0,0,1]]";
-        //System.out.println( countGoodIntegers(1,1));
-        System.out.println( robotSim( new int[]{4,-1,4,-2,4}, new int[][]{{2,4}} )) ;
-    }
-
-    public static class xy {
+class Solution {
+     public static class xy {
         int x;
         int y;
 
@@ -18,7 +8,8 @@ class main {
             y = j;
         }
     }
-    public static int robotSim(int[] commands, int[][] obstacles) {
+
+    public int robotSim(int[] commands, int[][] obstacles) {
         HashMap<String, Integer> map = new HashMap<>();
         for (int i=0;i<obstacles.length;i++) map.put((obstacles[i][0]+"-"+obstacles[i][1]),1);
         xy[] direction = new xy[4];
@@ -41,5 +32,4 @@ class main {
         }
         return max;
     }
-
 }
