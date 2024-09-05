@@ -1,0 +1,18 @@
+class Solution {
+    public int[] missingRolls(int[] rolls, int mean, int n) {
+        int sum = 0 , left = 0;
+        int[] result = new int[n];
+        for (int i: rolls) sum +=i;
+        left = mean * (rolls.length + n) - sum;
+        if (left > 6 *n || left < n) return new int[]{};
+        Arrays.fill(result, left / n);
+        left = left - n * (left / n);
+        int m = 0;
+        while (left > 0 ) {
+            result[m]++;
+            m = (m+1) % n;
+            left--;
+        }
+        return result;
+    }
+}
