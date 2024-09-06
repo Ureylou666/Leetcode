@@ -77,5 +77,21 @@ public class Utilities {
         return root;
     }
 
-
+    /** 
+    * @Description: arrayToListNode
+    * @Author: Urey Lou
+    * @Date: 2024-09-05
+    * @Param: [inputs]
+    * @return: ListNode
+    */
+    public static ListNode arrayToListNode(Integer[] inputs) {
+        ListNode dummy = new ListNode(), result = new ListNode(0);
+        dummy.next = result;
+        for (Integer i : inputs) {
+            result.next = new ListNode();
+            result = result.next;
+            result.val = i;
+        }
+        return dummy.next.next;
+    }
 }

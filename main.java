@@ -7,9 +7,12 @@ class main {
         // String grid2 = "[[0,0,0,0,0],[1,1,1,1,1],[0,1,0,1,0],[0,1,0,1,0],[1,0,0,0,1]]";
        // for (int n = 1; n <= 10; n++)
        //     for (int k= 1; k<=9; k++) System.out.println( "n="+n+" k="+k+"   "+countGoodIntegers(n,k) ) ;
-        System.out.println(Arrays.toString(missingRolls(new int[]{4,2,2,5,4,5,4,5,3,3,6,1,2,4,2,1,6,5,4,2,3,4,2,3,3,5,4,1,4,4,5,3,6,1,5,2,3,3,6,1,6,4,1,3}, 2, 53)));
+        System.out.println(  modifiedList(new int[]{1}, Utilities.arrayToListNode( new Integer[]{2,1,2,1,2,1,2} )) );
         // System.out.println( convertToString(51,3));
     }
+
+
+    //------------------------------------------------------------------------------------------
 
     /** 
     * @Description: https://leetcode.com/problems/find-the-count-of-good-integers/

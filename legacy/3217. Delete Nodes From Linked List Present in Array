@@ -1,0 +1,18 @@
+/**
+    * @Description: https://leetcode.com/problems/delete-nodes-from-linked-list-present-in-array
+    * @Author: Urey Lou
+    * @Date: 2024-09-05
+    * @Param: [nums, head]
+    * @return: ListNode
+    */
+    public static ListNode modifiedList(int[] nums, ListNode head) {
+        ListNode dummy = new ListNode();
+        Set<Integer> sets = new HashSet<>();
+        for (int i:nums) sets.add(i);
+        while (sets.contains(head.val)) head = head.next;
+        dummy.next = head;
+        while (head.next != null) {
+            if ( sets.contains( head.next.val )) head.next = head.next.next; else head = head.next;
+        }
+        return dummy.next;
+    }
