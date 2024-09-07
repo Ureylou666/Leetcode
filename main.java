@@ -7,7 +7,7 @@ class main {
         // String grid2 = "[[0,0,0,0,0],[1,1,1,1,1],[0,1,0,1,0],[0,1,0,1,0],[1,0,0,0,1]]";
        // for (int n = 1; n <= 10; n++)
        //     for (int k= 1; k<=9; k++) System.out.println( "n="+n+" k="+k+"   "+countGoodIntegers(n,k) ) ;
-        System.out.println(  modifiedList(new int[]{1}, Utilities.arrayToListNode( new Integer[]{2,1,2,1,2,1,2} )) );
+        System.out.println(  isSubPath( Utilities.arrayToListNode(new Integer[]{4,2,8}), Utilities.arrayToTreeNode(new Integer[]{1,4,4,null,2,2,null,1,null,6,8,null,null,null,null,1,3}) ) );
         // System.out.println( convertToString(51,3));
     }
 

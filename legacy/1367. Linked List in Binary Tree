@@ -1,0 +1,40 @@
+/**
+    * @Description: https://leetcode.com/problems/linked-list-in-binary-tree/?envType=daily-question&envId=2024-09-07
+    * @Author: Urey Lou
+    * @Date: 2024-09-07
+    * @Param: [head, root]
+    * @return: boolean
+    */
+    public static boolean isSubPath(ListNode head, TreeNode root) {
+        List<String> routes = new ArrayList<>();
+        String route = "";
+        bruteForce(root, routes, route);
+        String linked = "";
+        while (head != null) {
+            linked = linked + "-" + head.val;
+            head = head.next;
+        }
+        boolean result = false;
+        for (String s : routes) if (s.contains(linked)) return true;
+        return false;
+    }
+
+    private static void bruteForce(TreeNode root, List<String> routes, String route) {
+        if (root.left == null && root.right == null) {
+            route = route + "-" + (root.val);
+            String temp = route;
+            routes.add(temp);
+            route = route.substring(0, route.lastIndexOf('-'));
+            return;
+        }
+        if (root.left != null) {
+            route = route + "-" + (root.val);
+            bruteForce(root.left, routes,route);
+            route = route.substring(0, route.lastIndexOf('-'));
+        }
+        if (root.right != null) {
+            route = route + "-" + (root.val);
+            bruteForce(root.right, routes,route);
+            route = route.substring(0, route.lastIndexOf('-'));
+        }
+    }
