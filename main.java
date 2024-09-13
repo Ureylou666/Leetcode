@@ -11,35 +11,24 @@ class main {
         // System.out.println( convertToString(51,3));
     }
 
-    public static String convertDateToBinary(String date) {
-        int year, month , day;
-        year = Integer.parseInt(date.substring(0, 4));
-        month = Integer.parseInt( date.substring(5,7));
-        day = Integer.parseInt( date.substring(8,10));
-        return convert(year)+"-"+convert(month)+"-"+convert(day);
+    /** 
+    * @Description: https://leetcode.com/problems/spiral-matrix-iv
+    * @Author: Urey Lou
+    * @Date: 2024-09-13
+    * @Param: [m, n, head]
+    * @return: int[][]
+    */
+    public static int[][] spiralMatrix(int m, int n, ListNode head) {
+
     }
-
-    private static String convert(int n) {
-        StringBuilder sb = new StringBuilder();
-        while (n > 0) {
-            sb.append(n %2);
-            n = n/2;
-        }
-        return sb.reverse().toString();
-    }
-
-    //public static int maxPossibleScore(int[] start, int d) {
-//
-    //}
-
 
     /**
-    * @Description: https://leetcode.com/problems/split-linked-list-in-parts/?envType=daily-question&envId=2024-09-08
-    * @Author: Urey Lou
-    * @Date: 2024-09-07
-    * @Param: [head, k]
-    * @return: ListNode[]
-    */
+     * @Description: https://leetcode.com/problems/split-linked-list-in-parts/?envType=daily-question&envId=2024-09-08
+     * @Author: Urey Lou
+     * @Date: 2024-09-07
+     * @Param: [head, k]
+     * @return: ListNode[]
+     */
     public static ListNode[] splitListToParts(ListNode head, int k) {
         int total = 0;
         ListNode dummy = new ListNode();
@@ -73,6 +62,25 @@ class main {
         }
 
         return result;
+    }
+
+
+
+    public static String convertDateToBinary(String date) {
+        int year, month , day;
+        year = Integer.parseInt(date.substring(0, 4));
+        month = Integer.parseInt( date.substring(5,7));
+        day = Integer.parseInt( date.substring(8,10));
+        return convert(year)+"-"+convert(month)+"-"+convert(day);
+    }
+
+    private static String convert(int n) {
+        StringBuilder sb = new StringBuilder();
+        while (n > 0) {
+            sb.append(n %2);
+            n = n/2;
+        }
+        return sb.reverse().toString();
     }
 
 

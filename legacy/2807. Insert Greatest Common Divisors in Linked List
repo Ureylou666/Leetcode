@@ -1,0 +1,27 @@
+/**
+    * @Description: https://leetcode.com/problems/insert-greatest-common-divisors-in-linked-list
+    * @Author: Urey Lou
+    * @Date: 2024-09-13
+    * @Param: [head]
+    * @return: ListNode
+    */
+    public static ListNode insertGreatestCommonDivisors(ListNode head) {
+        ListNode node1 = head;
+        ListNode node2 = head.next;
+
+        while (node2.next != null) {
+            int gcdVal = gcd(node1.val, node2.val);
+            ListNode gcdNode = new ListNode(gcdVal);
+            node1.next = gcdNode;
+            gcdNode.next = node2;
+            node1 = node2;
+            node2 = node2.next;
+        }
+
+        return head;
+    }
+
+    private static int gcd(int x , int y) {
+        if (y == 0) return x;
+        return gcd(y, x % y);
+    }

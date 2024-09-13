@@ -1,0 +1,19 @@
+/**
+    * @Description: https://leetcode.com/problems/count-the-number-of-consistent-strings
+    * @Author: Urey Lou
+    * @Date: 2024-09-12
+    * @Param: [allowed, words]
+    * @return: int
+    */
+    public int countConsistentStrings(String allowed, String[] words) {
+        HashMap<Character, Integer> map = new HashMap<>();
+        for (Character c:allowed.toCharArray()) map.put(c, 1);
+        int result = 0;
+        for (String s : words) {
+            for (Character c: s.toCharArray()) if (!map.containsKey(c)) {
+                result++;
+                break;
+            }
+        }
+        return words.length-result;
+    }
