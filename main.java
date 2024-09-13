@@ -5,21 +5,7 @@ class main {
     public static void main (String[] args) {
         // String grid1 = "[[1,0,1,0,1],[1,1,1,1,1],[0,0,0,0,0],[1,1,1,1,1],[1,0,1,0,1]]";
         // String grid2 = "[[0,0,0,0,0],[1,1,1,1,1],[0,1,0,1,0],[0,1,0,1,0],[1,0,0,0,1]]";
-       // for (int n = 1; n <= 10; n++)
-       //     for (int k= 1; k<=9; k++) System.out.println( "n="+n+" k="+k+"   "+countGoodIntegers(n,k) ) ;
-        System.out.println(Arrays.toString(xorQueries( new int[]{1,3,4,8}, new int[][]{{0,1}, {1,2},{0,3}, {3,3}})));
-        // System.out.println( convertToString(51,3));
-    }
-
-    /** 
-    * @Description: https://leetcode.com/problems/spiral-matrix-iv
-    * @Author: Urey Lou
-    * @Date: 2024-09-13
-    * @Param: [m, n, head]
-    * @return: int[][]
-    */
-    public static int[][] spiralMatrix(int m, int n, ListNode head) {
-
+        System.out.println(Arrays.toString(splitListToParts(Utilities.arrayToListNode(new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9}), 4)));
     }
 
     /**
@@ -30,38 +16,36 @@ class main {
      * @return: ListNode[]
      */
     public static ListNode[] splitListToParts(ListNode head, int k) {
-        int total = 0;
         ListNode dummy = new ListNode();
+        ListNode[] result = new ListNode[k];
         dummy.next = head;
-        while (head != null) {
-            head = head.next;
+        int total = 0;
+        while (dummy != null) {
+            dummy= dummy.next;
             total++;
         }
-        ListNode[] result = new ListNode[k];
+        // total <= k
         if (total <= k) {
-            for (int i = 0; i<total; i++) {
-                ListNode temp = new ListNode(dummy.next.val);
-                dummy = dummy.next;
-                result[i] = temp;
+            for (int i = 0; i<total-1; i++) {
+                result[i] = new ListNode(head.val);
+                head = head.next;
             }
             return result;
         }
-        result[0] = dummy;
-        for (int i = 0; i<k + total % k; i++) {
-            dummy = dummy.next;
+        // total > k
+        int x = total / k + total % k;
+        ListNode temp = new ListNode(head.val);
+        head = head.next;
+        for (int i = 1; i < x; i++) {
+            temp.next = new ListNode(head.val);
+            head = head.next;
+            temp=temp.next;
         }
-        result[1] = dummy.next;
-        dummy = null;
-        for (int i = 1; i< total / k; i++){
-            for (int j=0; j<k; j++) {
-                result[i] = new ListNode(dummy.val);
-                result[i] = result[i].next;
-                dummy = dummy.next;
-            }
-            result[i].next = null;
-        }
-
+        result[0] = new ListNode();
+        result[0].next = temp;
+        result[0] = result[0].next;
         return result;
+
     }
 
 
