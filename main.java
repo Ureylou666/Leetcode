@@ -7,8 +7,72 @@ class main {
         // String grid2 = "[[0,0,0,0,0],[1,1,1,1,1],[0,1,0,1,0],[0,1,0,1,0],[1,0,0,0,1]]";
        // for (int n = 1; n <= 10; n++)
        //     for (int k= 1; k<=9; k++) System.out.println( "n="+n+" k="+k+"   "+countGoodIntegers(n,k) ) ;
-        System.out.println(  isSubPath( Utilities.arrayToListNode(new Integer[]{4,2,8}), Utilities.arrayToTreeNode(new Integer[]{1,4,4,null,2,2,null,1,null,6,8,null,null,null,null,1,3}) ) );
+        System.out.println(Arrays.toString(xorQueries( new int[]{1,3,4,8}, new int[][]{{0,1}, {1,2},{0,3}, {3,3}})));
         // System.out.println( convertToString(51,3));
+    }
+
+    public static String convertDateToBinary(String date) {
+        int year, month , day;
+        year = Integer.parseInt(date.substring(0, 4));
+        month = Integer.parseInt( date.substring(5,7));
+        day = Integer.parseInt( date.substring(8,10));
+        return convert(year)+"-"+convert(month)+"-"+convert(day);
+    }
+
+    private static String convert(int n) {
+        StringBuilder sb = new StringBuilder();
+        while (n > 0) {
+            sb.append(n %2);
+            n = n/2;
+        }
+        return sb.reverse().toString();
+    }
+
+    //public static int maxPossibleScore(int[] start, int d) {
+//
+    //}
+
+
+    /**
+    * @Description: https://leetcode.com/problems/split-linked-list-in-parts/?envType=daily-question&envId=2024-09-08
+    * @Author: Urey Lou
+    * @Date: 2024-09-07
+    * @Param: [head, k]
+    * @return: ListNode[]
+    */
+    public static ListNode[] splitListToParts(ListNode head, int k) {
+        int total = 0;
+        ListNode dummy = new ListNode();
+        dummy.next = head;
+        while (head != null) {
+            head = head.next;
+            total++;
+        }
+        ListNode[] result = new ListNode[k];
+        if (total <= k) {
+            for (int i = 0; i<total; i++) {
+                ListNode temp = new ListNode(dummy.next.val);
+                dummy = dummy.next;
+                result[i] = temp;
+            }
+            return result;
+        }
+        result[0] = dummy;
+        for (int i = 0; i<k + total % k; i++) {
+            dummy = dummy.next;
+        }
+        result[1] = dummy.next;
+        dummy = null;
+        for (int i = 1; i< total / k; i++){
+            for (int j=0; j<k; j++) {
+                result[i] = new ListNode(dummy.val);
+                result[i] = result[i].next;
+                dummy = dummy.next;
+            }
+            result[i].next = null;
+        }
+
+        return result;
     }
 
 
