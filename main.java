@@ -5,67 +5,9 @@ class main {
     public static void main (String[] args) {
         // String grid1 = "[[1,0,1,0,1],[1,1,1,1,1],[0,0,0,0,0],[1,1,1,1,1],[1,0,1,0,1]]";
         // String grid2 = "[[0,0,0,0,0],[1,1,1,1,1],[0,1,0,1,0],[0,1,0,1,0],[1,0,0,0,1]]";
-        System.out.println(Arrays.toString(splitListToParts(Utilities.arrayToListNode(new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9}), 4)));
+        System.out.println( longestSubarray(new int[]{96317,96317,96317,96317,96317,96317,96317,96317,96317,279979}) );
     }
 
-    /**
-     * @Description: https://leetcode.com/problems/split-linked-list-in-parts/?envType=daily-question&envId=2024-09-08
-     * @Author: Urey Lou
-     * @Date: 2024-09-07
-     * @Param: [head, k]
-     * @return: ListNode[]
-     */
-    public static ListNode[] splitListToParts(ListNode head, int k) {
-        ListNode dummy = new ListNode();
-        ListNode[] result = new ListNode[k];
-        dummy.next = head;
-        int total = 0;
-        while (dummy != null) {
-            dummy= dummy.next;
-            total++;
-        }
-        // total <= k
-        if (total <= k) {
-            for (int i = 0; i<total-1; i++) {
-                result[i] = new ListNode(head.val);
-                head = head.next;
-            }
-            return result;
-        }
-        // total > k
-        int x = total / k + total % k;
-        ListNode temp = new ListNode(head.val);
-        head = head.next;
-        for (int i = 1; i < x; i++) {
-            temp.next = new ListNode(head.val);
-            head = head.next;
-            temp=temp.next;
-        }
-        result[0] = new ListNode();
-        result[0].next = temp;
-        result[0] = result[0].next;
-        return result;
-
-    }
-
-
-
-    public static String convertDateToBinary(String date) {
-        int year, month , day;
-        year = Integer.parseInt(date.substring(0, 4));
-        month = Integer.parseInt( date.substring(5,7));
-        day = Integer.parseInt( date.substring(8,10));
-        return convert(year)+"-"+convert(month)+"-"+convert(day);
-    }
-
-    private static String convert(int n) {
-        StringBuilder sb = new StringBuilder();
-        while (n > 0) {
-            sb.append(n %2);
-            n = n/2;
-        }
-        return sb.reverse().toString();
-    }
 
 
     //------------------------------------------------------------------------------------------
@@ -171,4 +113,64 @@ class main {
             }
         }
     }
+
+    /**
+     * @Description: https://leetcode.com/problems/split-linked-list-in-parts/?envType=daily-question&envId=2024-09-08
+     * @Author: Urey Lou
+     * @Date: 2024-09-07
+     * @Param: [head, k]
+     * @return: ListNode[]
+     */
+    public static ListNode[] splitListToParts(ListNode head, int k) {
+        ListNode dummy = new ListNode();
+        ListNode[] result = new ListNode[k];
+        dummy.next = head;
+        int total = 0;
+        while (dummy != null) {
+            dummy= dummy.next;
+            total++;
+        }
+        // total <= k
+        if (total <= k) {
+            for (int i = 0; i<total-1; i++) {
+                result[i] = new ListNode(head.val);
+                head = head.next;
+            }
+            return result;
+        }
+        // total > k
+        int x = total / k + total % k;
+        ListNode temp = new ListNode(head.val);
+        head = head.next;
+        for (int i = 1; i < x; i++) {
+            temp.next = new ListNode(head.val);
+            head = head.next;
+            temp=temp.next;
+        }
+        result[0] = new ListNode();
+        result[0].next = temp;
+        result[0] = result[0].next;
+        return result;
+
+    }
+
+    public static String convertDateToBinary(String date) {
+        int year, month , day;
+        year = Integer.parseInt(date.substring(0, 4));
+        month = Integer.parseInt( date.substring(5,7));
+        day = Integer.parseInt( date.substring(8,10));
+        return convert(year)+"-"+convert(month)+"-"+convert(day);
+    }
+
+    private static String convert(int n) {
+        StringBuilder sb = new StringBuilder();
+        while (n > 0) {
+            sb.append(n %2);
+            n = n/2;
+        }
+        return sb.reverse().toString();
+    }
+
+
+
 }
