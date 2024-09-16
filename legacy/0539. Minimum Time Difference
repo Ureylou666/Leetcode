@@ -1,0 +1,29 @@
+/**
+    * @Description: https://leetcode.com/problems/minimum-time-difference/
+    * @Author: Urey Lou
+    * @Date: 2024-09-16
+    * @Param: [timePoints]
+    * @return: int
+*/
+    public static int findMinDifference(List<String> timePoints) {
+        int[] minites = new int[1440];
+        int min = 1440 ,temp = 0 , left = 0, right = 0, result = 1440;
+        for (int i=0;i<timePoints.size();i++){
+            temp = getMinutes(timePoints.get(i));
+            minites[temp]++;
+            if (minites[temp] > 1) return 0;
+            if (temp<min) min = temp;
+        }
+        left = min;
+        for (int i = min+1; i<1440; i++) if (minites[i] > 0) {
+            temp = Math.min(i - left, left + 1440 -i);
+            if (temp < result) result = temp;
+            left = i;
+        }
+        if (min + 1440 - left < result) result = min + 1440 - left;
+        return result;
+    }
+
+    private static int getMinutes(String s) {
+        return ( (s.charAt(0) - '0') *10 + s.charAt(1) - '0' ) * 60 + (s.charAt(3) - '0')*10+ s.charAt(4) - '0' ;
+    }

@@ -5,9 +5,139 @@ class main {
     public static void main (String[] args) {
         // String grid1 = "[[1,0,1,0,1],[1,1,1,1,1],[0,0,0,0,0],[1,1,1,1,1],[1,0,1,0,1]]";
         // String grid2 = "[[0,0,0,0,0],[1,1,1,1,1],[0,1,0,1,0],[0,1,0,1,0],[1,0,0,0,1]]";
-        System.out.println( longestSubarray(new int[]{96317,96317,96317,96317,96317,96317,96317,96317,96317,279979}) );
+        List<List<Integer>> grid = new ArrayList<>();
+        grid.add(Arrays.asList(0,1,0,0,0));
+        grid.add(Arrays.asList(0,1,0,1,0));
+        grid.add(Arrays.asList(0,0,0,1,0));
+        System.out.println( findMinDifference(Arrays.asList("00:00","23:59")) );
     }
 
+    public static int[] getSneakyNumbers(int[] nums) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int i:nums) map.put(i, map.getOrDefault(i, 0)+1);
+        int[] result = new int[2];
+        int s = 0;
+        for (int key : map.keySet()) if (map.get(key) == 2) {
+            result[s] = key;
+            s++;
+            if (s==2) return result;
+        }
+        return result;
+    }
+
+    public static int minConcatToFormTarget(String[] words, String target) {
+        int n = target.length();
+        int[] dp = new int[n + 1];
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        dp[0] = 0;
+
+        for (int i = 0; i < n; i++) {
+            if (dp[i] == Integer.MAX_VALUE) continue;
+            for (String word : words) {
+                int len = word.length();
+                if (i + len <= n && target.substring(i, i + len).equals(word)) {
+                    dp[i + len] = Math.min(dp[i + len], dp[i] + 1);
+                }
+            }
+        }
+
+        return dp[n] == Integer.MAX_VALUE ? -1 : dp[n];
+    }
+
+    public long maxScore(int[] a, int[] b) {
+        int n = b.length;
+        if (n < 4) {
+            throw new IllegalArgumentException("Array b must have at least 4 elements.");
+        }
+
+        // Initialize dp arrays to store maximum scores
+        int[] dp1 = new int[n];
+        int[] dp2 = new int[n];
+        int[] dp3 = new int[n];
+        int[] dp4 = new int[n];
+
+        // Calculate dp1: Maximum value of a[0] * b[i] for i in [0, n-1]
+        dp1[0] = a[0] * b[0];
+        for (int i = 1; i < n; i++) {
+            dp1[i] = Math.max(dp1[i - 1], a[0] * b[i]);
+        }
+
+        // Calculate dp2: Maximum value of a[0] * b[i0] + a[1] * b[i1] for i0 < i1
+        dp2[1] = dp1[0] + a[1] * b[1];
+        for (int i = 2; i < n; i++) {
+            dp2[i] = Math.max(dp2[i - 1], dp1[i - 1] + a[1] * b[i]);
+        }
+
+        // Calculate dp3: Maximum value of a[0] * b[i0] + a[1] * b[i1] + a[2] * b[i2] for i0 < i1 < i2
+        dp3[2] = dp2[1] + a[2] * b[2];
+        for (int i = 3; i < n; i++) {
+            dp3[i] = Math.max(dp3[i - 1], dp2[i - 1] + a[2] * b[i]);
+        }
+
+        // Calculate dp4: Maximum value of a[0] * b[i0] + a[1] * b[i1] + a[2] * b[i2] + a[3] * b[i3] for i0 < i1 < i2 < i3
+        dp4[3] = dp3[2] + a[3] * b[3];
+        for (int i = 4; i < n; i++) {
+            dp4[i] = Math.max(dp4[i - 1], dp3[i - 1] + a[3] * b[i]);
+        }
+
+        // The final answer is the maximum value of dp4
+        return dp4[n - 1];
+    }
+
+    public List<Integer> stableMountains(int[] height, int threshold) {
+        List<Integer> result = new ArrayList<>();
+        for (int i=1;i<height.length;i++) if (height[i-1]>threshold) result.add(i);
+        return result;
+    }
+
+    private static int[] dx = {1, -1, 0, 0}; // Four directions for x movement
+    private static int[] dy = {0, 0, 1, -1}; // Four directions for y movement
+
+    public static boolean findSafeWalk(List<List<Integer>> grid, int health) {
+        int m = grid.size();
+        int n = grid.get(0).size();
+        int[][] map = new int[m][n];
+        int[][] minCost = new int[m][n];
+
+        // Initialize map and minCost
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                map[i][j] = grid.get(i).get(j);
+                minCost[i][j] = Integer.MAX_VALUE; // Initialize min cost
+            }
+        }
+
+        // BFS to find the minimum path cost
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[2] - b[2]); // Min-heap [x, y, cost]
+        pq.offer(new int[]{0, 0, map[0][0]});
+        minCost[0][0] = map[0][0];
+
+        while (!pq.isEmpty()) {
+            int[] curr = pq.poll();
+            int x = curr[0], y = curr[1], cost = curr[2];
+
+            // If we reach the bottom-right corner, return the result
+            if (x == m - 1 && y == n - 1) {
+                return health > cost;
+            }
+
+            // Traverse four directions
+            for (int i = 0; i < 4; i++) {
+                int newX = x + dx[i];
+                int newY = y + dy[i];
+
+                if (newX >= 0 && newY >= 0 && newX < m && newY < n) {
+                    int newCost = cost + map[newX][newY];
+                    if (newCost < minCost[newX][newY]) {
+                        minCost[newX][newY] = newCost;
+                        pq.offer(new int[]{newX, newY, newCost});
+                    }
+                }
+            }
+        }
+
+        return false; // No valid path found
+    }
 
 
     //------------------------------------------------------------------------------------------
