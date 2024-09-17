@@ -1,0 +1,22 @@
+/**
+    * @Description: https://leetcode.com/problems/uncommon-words-from-two-sentences/description/
+    * @Author: Urey Lou
+    * @Date: 2024-09-16
+    * @Param: [s1, s2]
+    * @return: java.lang.String[]
+    */
+
+    public static String[] uncommonFromSentences(String s1, String s2) {
+        String[] strs1 = s1.split(" ");
+        HashMap<String, Integer> map1 = new HashMap<>();
+        for (String str : strs1) map1.put(str, map1.getOrDefault( str, 0) +1);
+        String[] strs2 = s2.split(" ");
+        HashMap<String, Integer> map2 = new HashMap<>();
+        for (String str : strs2) map2.put(str, map2.getOrDefault( str, 0) +1);
+        List<String> result = new ArrayList<>();
+        for (String s : map1.keySet()) {
+            if (map1.get(s) == 1 && !map2.containsKey(s)) result.add(s);
+        }
+        for (String s : map2.keySet()) if (map2.get(s) == 1 && !map1.containsKey(s)) result.add(s);
+        return result.toArray(new String[0]);
+    }

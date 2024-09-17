@@ -9,8 +9,9 @@ class main {
         grid.add(Arrays.asList(0,1,0,0,0));
         grid.add(Arrays.asList(0,1,0,1,0));
         grid.add(Arrays.asList(0,0,0,1,0));
-        System.out.println( findMinDifference(Arrays.asList("00:00","23:59")) );
+        System.out.println(Arrays.toString(uncommonFromSentences("this apple is sweet", "this apple is sour")));
     }
+
 
     public static int[] getSneakyNumbers(int[] nums) {
         HashMap<Integer, Integer> map = new HashMap<>();
