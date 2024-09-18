@@ -1,0 +1,16 @@
+/**
+    * @Description: https://leetcode.com/problems/minimum-bit-flips-to-convert-number
+    * @Author: Urey Lou
+    * @Date: 2024-09-13
+    * @Param: [start, goal]
+    * @return: int
+    */
+    public static int minBitFlips(int start, int goal) {
+        int x = start ^ goal;
+        int result = 0;
+        while (x > 0) {
+            result += x % 2;
+            x /= 2;
+        }
+        return result;
+    }

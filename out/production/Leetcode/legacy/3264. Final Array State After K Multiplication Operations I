@@ -1,0 +1,20 @@
+ /**
+    * @Description: https://leetcode.com/contest/weekly-contest-412/problems/final-array-state-after-k-multiplication-operations-i/
+    * @Author: Urey Lou
+    * @Date: 2024-08-24
+    * @Param: [nums, k, multiplier]
+    * @return: int[]
+    */
+    public static int[] getFinalState(int[] nums, int k, int multiplier) {
+        int n = 0, min ;
+        while (k > 0) {
+            min = Integer.MAX_VALUE;
+            for (int i=0; i<nums.length; i++) if (nums[i] < min) {
+                min = nums[i];
+                n = i;
+            }
+            nums[n] = min * multiplier;
+            k--;
+        }
+        return nums;
+    }

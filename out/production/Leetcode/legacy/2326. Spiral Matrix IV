@@ -1,0 +1,47 @@
+/**
+    * @Description: https://leetcode.com/problems/spiral-matrix-iv
+    * @Author: Urey Lou
+    * @Date: 2024-09-13
+    * @Param: [m, n, head]
+    * @return: int[][]
+    */
+    public static int[][] spiralMatrix(int m, int n, ListNode head) {
+        int[][] result = new int[m][n];
+        for (int i = 0; i < result.length; i++) Arrays.fill(result[i], -1);
+        int x = 0 , y = 0, i = 0 , j = 0;
+        while (head != null) {
+            // Right
+            for ( j = y; j < n; j++) {
+                result[i][j] = head.val;
+                head = head.next;
+                if (head == null) return result;
+            }
+            j--;
+            x++;
+            // Down
+            for ( i = x; i < m; i++ ) {
+                result[i][j] = head.val;
+                head = head.next;
+                if (head == null) return result;
+            }
+            i--;
+            n--;
+            // Left
+            for ( j = n-1; j >= y; j--) {
+                result[i][j] = head.val;
+                head = head.next;
+                if (head == null) return result;
+            }
+            j++;
+            m--;
+            // Up
+            for ( i = m-1; i >= x; i--) {
+                result[i][j] = head.val;
+                head = head.next;
+                if (head == null) return result;
+            }
+            i++;
+            y++;
+        }
+        return result;
+    }

@@ -1,0 +1,27 @@
+/**
+    * @Description: https://leetcode.com/problems/sum-of-digits-of-string-after-convert/?envType=daily-question&envId=2024-09-03
+    * @Author: Urey Lou
+    * @Date: 2024-09-02
+    * @Param: [s, k]
+    * @return: int
+*/
+    public static int getLucky(String s, int k) {
+        List<Integer> list = new ArrayList<>();
+        int sum = 0 , result = 0;
+        for (int i = 0; i < s.length(); i++) {
+            list.add(  (s.charAt(i) - 'a' + 1) % 10 );
+            list.add(  (s.charAt(i) - 'a' + 1) / 10 );
+        }
+        while (k>0) {
+            for (int i:list) sum += i;
+            if (sum < 10) return sum;
+            result = sum;
+            list.clear();
+            while (sum > 0) {
+                list.add(sum % 10);
+                sum = sum / 10;
+            }
+            k--;
+        }
+        return result;
+    }
