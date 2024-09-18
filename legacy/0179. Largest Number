@@ -1,0 +1,52 @@
+/**
+    * @Description: https://leetcode.com/problems/largest-number/
+    * @Author: Urey Lou
+    * @Date: 2024-09-17
+    * @Param: [nums]
+    * @return: java.lang.String
+    */
+    public static String largestNumber(int[] nums) {
+        boolean zero = true;
+        for (int i : nums)
+            if (i > 0) {
+                zero = false;
+                break;
+            }
+        if (zero) return "0";
+        for (int i = 0; i<nums.length-1; i++)
+            for (int j = i+1; j<nums.length; j++) if (!compare(nums[i], nums[j])) {
+                int temp = nums[i];
+                nums[i] = nums[j];
+                nums[j] = temp;
+            }
+        StringBuilder sb = new StringBuilder();
+        for (int i=0;i<nums.length;i++) sb.append(nums[i]);
+        return sb.toString();
+    }
+
+    private static boolean compare(int a, int b) {
+        char[] charA = (String.valueOf(a) + b).toCharArray();
+        char[] charB = (String.valueOf(b) + a).toCharArray();
+        for (int i = 0; i < charA.length; i++) if (charA[i] > charB[i]) return true; else if (charA[i] < charB[i]) return false;
+        return true;
+    }
+
+
+----------------------------------------------------------------------------------------------------
+class Solution {
+    public String largestNumber(int[] nums) {
+        String[] array =  new String[nums.length];
+        for(int i=0; i<nums.length; i++){
+            array[i] = String.valueOf(nums[i]);
+        }
+        Arrays.sort(array,(a,b)-> (b+a).compareTo(a+b));
+        if(array[0].equals("0")){
+            return "0";
+        }
+        StringBuilder largest = new StringBuilder();
+        for(int i=0; i<array.length; i++){
+            largest.append(array[i]);
+        }
+        return largest.toString();
+    }
+}
