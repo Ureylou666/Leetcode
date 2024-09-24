@@ -1,0 +1,68 @@
+/**
+    * @Description: https://leetcode.com/problems/shortest-palindrome/description/
+    * @Author: Urey Lou
+    * @Date: 2024-09-20
+    * @Param: [s]
+    * @return: java.lang.String
+    */
+
+    public static String shortestPalindrome(String s) {
+        int mid = s.length() / 2;
+        String result;
+        for (int i = mid; i>=0; i--) {
+            result = count(s, i);
+            if (result != "") return result;
+        }
+        return "";
+    }
+
+    private static String count(String s, int mid) {
+        StringBuilder str = new StringBuilder(s);
+        if (mid == 0) {
+            for (int i=1;i<s.length();i++) str.insert(0, s.charAt(i));
+            return str.toString();
+        }
+        int left = mid - 1, right = mid + 1, result;
+
+        result = Integer.MAX_VALUE;
+        while (left >=0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+            left--;
+            right++;
+        }
+        if (left < 0) {
+            result =s.length()-right;
+            for (int i=right;i<s.length();i++) str.insert(0, s.charAt(i));
+        }
+        left = mid-1; right = mid;
+        while (left >=0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+            left--;
+            right++;
+        }
+        if (left < 0) if ( s.length() - right < result) {
+            result = s.length() - right;
+            for (int i=right;i<s.length();i++) str.insert(0, s.charAt(i));
+        }
+        if (result < Integer.MAX_VALUE) return str.toString();
+        return "";
+    }
+
+    ------------------
+
+    public static String shortestPalindrome(String s) {
+            String newString = s + "#" +(new StringBuilder(s).reverse().toString());
+            int[] pi = new int[newString.length()];
+            int i = 1, k = 0;
+            while (i<newString.length()) {
+                if (newString.charAt(i) == newString.charAt(k)) {
+                    k++;
+                    pi[i] = k;
+                    i++;
+                } else {
+                    if (k>0) k = pi[k-1]; else {
+                        pi[i] = 0;
+                        i++;
+                    }
+                }
+            }
+            return new StringBuilder(s.substring(pi[newString.length()-1])).reverse()+s;
+        }

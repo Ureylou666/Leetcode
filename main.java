@@ -5,305 +5,102 @@ class main {
     public static void main (String[] args) {
         // String grid1 = "[[1,0,1,0,1],[1,1,1,1,1],[0,0,0,0,0],[1,1,1,1,1],[1,0,1,0,1]]";
         // String grid2 = "[[0,0,0,0,0],[1,1,1,1,1],[0,1,0,1,0],[0,1,0,1,0],[1,0,0,0,1]]";
-        List<List<Integer>> grid = new ArrayList<>();
-        grid.add(Arrays.asList(0,1,0,0,0));
-        grid.add(Arrays.asList(0,1,0,1,0));
-        grid.add(Arrays.asList(0,0,0,1,0));
-        System.out.println( largestNumber(new int[]{3,30,34,5,9}) );
+        String s1 = "leetscode", s2 = "code";
+        System.out.println( maximalRectangle(new char[][]{ {'1','0','1','0','0'},{'1','0','1','1','1'},{'1','1','1','1','1'},{'1','0','0','1','0'} }) );
     }
 
 
-    public static int[] getSneakyNumbers(int[] nums) {
-        HashMap<Integer, Integer> map = new HashMap<>();
-        for (int i:nums) map.put(i, map.getOrDefault(i, 0)+1);
-        int[] result = new int[2];
-        int s = 0;
-        for (int key : map.keySet()) if (map.get(key) == 2) {
-            result[s] = key;
-            s++;
-            if (s==2) return result;
+
+    public static int maximalRectangle(char[][] matrix) {
+        int n = matrix.length, m = matrix[0].length;
+        int[][][] dp = new int[n+1][m+1][4];
+        int max = 0;
+
+        for (int i = 1; i<=n; i++)
+            for (int j = 1; j<=m; j++) if (matrix[i-1][j-1] == '1') {
+                dp[i][j][0] = dp[i-1][j][0] + 1;
+                dp[i][j][1] = dp[i][j-1][1] + 1;
+                if (dp[i-1][j-1][2] != 0 && dp[i-1][j][2] != 0 && dp[i][j-1][2] != 0) {
+                    dp[i][j][2] = dp[i-1][j-1][2];
+                    dp[i][j][3] = dp[i-1][j-1][3];
+                } else {
+                    dp[i][j][2] = i;
+                    dp[i][j][3] = j;
+                }
+                max = Math.max( getMax(dp[i][j][0], dp[i][j][1], (i-dp[i][j][2]+1)*(j-dp[i][j][3]+1)) , max);
+            }
+        for (int i = 1; i<=n; i++) {
+            for (int j = 1; j<=m; j++) {
+                System.out.print(dp[i][j][0]+" "+dp[i][j][1]+" "+dp[i][j][2]+" "+dp[i][j][3]+" | ");
+            }
+            System.out.println();
+            System.out.println("------------------------");
         }
-        return result;
+
+        return max;
     }
 
-    public static int minConcatToFormTarget(String[] words, String target) {
-        int n = target.length();
-        int[] dp = new int[n + 1];
-        Arrays.fill(dp, Integer.MAX_VALUE);
+    private static int getMax(int a1, int a2, int a3) {
+        return Math.max( Math.max(a1,a2), a3);
+    }
+
+    public static int minExtraChar(String s, String[] dictionary) {
+        Set<String> wordlist = new HashSet<>(Arrays.asList(dictionary));
+
+        int[] dp = new int[s.length()+1];
+        dp[s.length()] = 0;
+
+        for (int i = s.length()-1; i>=0; i--) {
+            dp[i] = dp[i+1]+1;
+            for (int j = i+1; j<=s.length(); j++) {
+                if (wordlist.contains(s.substring(i, j))) dp[i] = Math.min(dp[i], dp[j]);
+            }
+        }
+
+        return dp[0];
+    }
+
+    public static int maxProfit(int[] prices) {
+        int[][] dp = new int[prices.length+1][2];
+        // [0] hold | [1] not hold
+        dp[0][0] = -prices[0];
+        dp[0][1] = 0;
+        dp[1][0] = Math.max(dp[0][0], -prices[1]);
+
+        for (int i=2; i<prices.length; i++) {
+            dp[i][0] = Math.max(dp[i-1][0], dp[i-1][1]-prices[i]);
+            dp[i][1] = Math.max(dp[i-2][0]+prices[i], dp[i-1][1]);
+        }
+
+        return dp[prices.length][0];
+    }
+
+    public static int coinChange(int[] coins, int amount) {
+        if (amount == 0) return 0;
+
+        Arrays.sort(coins);
+        int[] dp = new int[amount+1];
+
+        Arrays.fill(dp, Integer.MAX_VALUE-1);
         dp[0] = 0;
 
-        for (int i = 0; i < n; i++) {
-            if (dp[i] == Integer.MAX_VALUE) continue;
-            for (String word : words) {
-                int len = word.length();
-                if (i + len <= n && target.substring(i, i + len).equals(word)) {
-                    dp[i + len] = Math.min(dp[i + len], dp[i] + 1);
-                }
-            }
-        }
+        for (int i = 0; i<coins.length; i++)
+            for (int j = coins[i]; j <= amount; j++) dp[j] = Math.min(dp[j], dp[j - coins[i]] +1 );
 
-        return dp[n] == Integer.MAX_VALUE ? -1 : dp[n];
+        if (dp[amount] == Integer.MAX_VALUE-1) return -1;
+        return dp[amount];
     }
 
-    public long maxScore(int[] a, int[] b) {
-        int n = b.length;
-        if (n < 4) {
-            throw new IllegalArgumentException("Array b must have at least 4 elements.");
-        }
+    public static int change(int amount, int[] coins) {
+        Arrays.sort(coins);
+        if (amount < coins[0]) return 0;
 
-        // Initialize dp arrays to store maximum scores
-        int[] dp1 = new int[n];
-        int[] dp2 = new int[n];
-        int[] dp3 = new int[n];
-        int[] dp4 = new int[n];
+        int[] dp =  new int[amount+1];
+        dp[0] = 1;
 
-        // Calculate dp1: Maximum value of a[0] * b[i] for i in [0, n-1]
-        dp1[0] = a[0] * b[0];
-        for (int i = 1; i < n; i++) {
-            dp1[i] = Math.max(dp1[i - 1], a[0] * b[i]);
-        }
-
-        // Calculate dp2: Maximum value of a[0] * b[i0] + a[1] * b[i1] for i0 < i1
-        dp2[1] = dp1[0] + a[1] * b[1];
-        for (int i = 2; i < n; i++) {
-            dp2[i] = Math.max(dp2[i - 1], dp1[i - 1] + a[1] * b[i]);
-        }
-
-        // Calculate dp3: Maximum value of a[0] * b[i0] + a[1] * b[i1] + a[2] * b[i2] for i0 < i1 < i2
-        dp3[2] = dp2[1] + a[2] * b[2];
-        for (int i = 3; i < n; i++) {
-            dp3[i] = Math.max(dp3[i - 1], dp2[i - 1] + a[2] * b[i]);
-        }
-
-        // Calculate dp4: Maximum value of a[0] * b[i0] + a[1] * b[i1] + a[2] * b[i2] + a[3] * b[i3] for i0 < i1 < i2 < i3
-        dp4[3] = dp3[2] + a[3] * b[3];
-        for (int i = 4; i < n; i++) {
-            dp4[i] = Math.max(dp4[i - 1], dp3[i - 1] + a[3] * b[i]);
-        }
-
-        // The final answer is the maximum value of dp4
-        return dp4[n - 1];
+        for (int i = 0; i < coins.length; i++)
+            for (int j = coins[i]; j <= amount; j++) dp[j] += dp[j - coins[i]];
+        return dp[amount];
     }
-
-    public List<Integer> stableMountains(int[] height, int threshold) {
-        List<Integer> result = new ArrayList<>();
-        for (int i=1;i<height.length;i++) if (height[i-1]>threshold) result.add(i);
-        return result;
-    }
-
-    private static int[] dx = {1, -1, 0, 0}; // Four directions for x movement
-    private static int[] dy = {0, 0, 1, -1}; // Four directions for y movement
-
-    public static boolean findSafeWalk(List<List<Integer>> grid, int health) {
-        int m = grid.size();
-        int n = grid.get(0).size();
-        int[][] map = new int[m][n];
-        int[][] minCost = new int[m][n];
-
-        // Initialize map and minCost
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                map[i][j] = grid.get(i).get(j);
-                minCost[i][j] = Integer.MAX_VALUE; // Initialize min cost
-            }
-        }
-
-        // BFS to find the minimum path cost
-        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[2] - b[2]); // Min-heap [x, y, cost]
-        pq.offer(new int[]{0, 0, map[0][0]});
-        minCost[0][0] = map[0][0];
-
-        while (!pq.isEmpty()) {
-            int[] curr = pq.poll();
-            int x = curr[0], y = curr[1], cost = curr[2];
-
-            // If we reach the bottom-right corner, return the result
-            if (x == m - 1 && y == n - 1) {
-                return health > cost;
-            }
-
-            // Traverse four directions
-            for (int i = 0; i < 4; i++) {
-                int newX = x + dx[i];
-                int newY = y + dy[i];
-
-                if (newX >= 0 && newY >= 0 && newX < m && newY < n) {
-                    int newCost = cost + map[newX][newY];
-                    if (newCost < minCost[newX][newY]) {
-                        minCost[newX][newY] = newCost;
-                        pq.offer(new int[]{newX, newY, newCost});
-                    }
-                }
-            }
-        }
-
-        return false; // No valid path found
-    }
-
-
-
-
-    //------------------------------------------------------------------------------------------
-
-    /** 
-    * @Description: https://leetcode.com/problems/find-the-count-of-good-integers/
-    * @Author: Urey Lou
-    * @Date: 2024-09-04
-    * @Param: [n, k]
-    * @return: long
-    */
-    public static long countGoodIntegers(int n, int k) {
-        HashMap<String, Integer> checkedNum = new HashMap<>();
-        List<Integer> list1 = new ArrayList<>();
-        int[][] bruteforce = new int[][]{{1,9},{10,99},{100,999},{1000,9999},{10000,99999},{100000,999999}};
-        int num = 0;
-        String temp = "";
-        long result = 0;
-        for (int i=bruteforce[n/2 + n%2-1][0]; i<=bruteforce[n/2 + n%2 -1][1];i++) {
-            list1.clear();
-            list1 = converToList(i);
-            for (int q : list1) {
-                num = convertInt(q, n);
-                if (num % k ==0) {
-                    temp = convertToString(num);
-                    if (!checkedNum.containsKey(temp)) {
-                        result = result + counting(num);
-                        checkedNum.put(temp, 1);
-                    }
-                }
-            }
-        }
-        return result;
-    }
-
-    private static long counting(int n) {
-        int[] jiechen = new int[]{1,2,6,24,120,720,5040,40320,362880,3628800,39916800};
-        HashMap<Integer,Integer> map = new HashMap<>();
-        int k = String.valueOf(n).length();
-        long zeroCase = 0;
-        while (n>0) {
-            map.put(n%10, map.getOrDefault(n % 10, 0)+1);
-            n = n / 10;
-        }
-        long result = jiechen[k-1];
-        for (int i : map.keySet()) {
-            result = result / jiechen[map.get(i) - 1];
-        }
-        if (map.containsKey(0)) {
-            zeroCase = jiechen[k-2];
-            map.put(0, map.get(0)-1);
-            for (int i : map.keySet()) if (map.get(i) > 0) {
-                zeroCase = zeroCase / jiechen[map.get(i) - 1];
-            }
-        }
-        return result - zeroCase;
-    }
-
-    private static int convertInt(int n, int k) {
-        int[] palindromeaMutilple = new int[]{1,10,100,1000,10000,100000};
-        int result = n * palindromeaMutilple[k/2];
-        int i = k/2 + k%2 -1;
-        if (k % 2 == 1) {
-            n = n/10;
-            i--;
-        }
-        while (n>0) {
-            result = result + palindromeaMutilple[i] * (n % 10);
-            n = n /10;
-            i--;
-        }
-        return result;
-    }
-
-    private static String convertToString(int n) {
-        StringBuilder sb = new StringBuilder();
-        int[] count = new int[10];
-        Arrays.fill(count,0);
-        while (n>0) {
-            count[n % 10]++;
-            n = n / 10;
-        }
-        for (int i: count) sb.append(i);
-        return sb.toString();
-    }
-
-    private static List<Integer> converToList(int n) {
-        List<Integer> result = new ArrayList<>();
-        String numStr = String.valueOf(n);
-        permute("",numStr, result);
-        return result;
-    }
-
-    private static void permute(String prefix, String remaining, List<Integer> result) {
-        int len = remaining.length();
-        int temp = 0;
-        if (!prefix.isEmpty()) temp = Integer.parseInt(prefix);
-        if (len == 0) {
-            if (prefix.charAt(0) != '0' && !result.contains(temp)) result.add(temp);
-        }  else {
-            for (int i = 0; i < len; i++) {
-                permute(prefix + remaining.charAt(i),remaining.substring(0, i) + remaining.substring(i + 1) ,result);
-            }
-        }
-    }
-
-    /**
-     * @Description: https://leetcode.com/problems/split-linked-list-in-parts/?envType=daily-question&envId=2024-09-08
-     * @Author: Urey Lou
-     * @Date: 2024-09-07
-     * @Param: [head, k]
-     * @return: ListNode[]
-     */
-    public static ListNode[] splitListToParts(ListNode head, int k) {
-        ListNode dummy = new ListNode();
-        ListNode[] result = new ListNode[k];
-        dummy.next = head;
-        int total = 0;
-        while (dummy != null) {
-            dummy= dummy.next;
-            total++;
-        }
-        // total <= k
-        if (total <= k) {
-            for (int i = 0; i<total-1; i++) {
-                result[i] = new ListNode(head.val);
-                head = head.next;
-            }
-            return result;
-        }
-        // total > k
-        int x = total / k + total % k;
-        ListNode temp = new ListNode(head.val);
-        head = head.next;
-        for (int i = 1; i < x; i++) {
-            temp.next = new ListNode(head.val);
-            head = head.next;
-            temp=temp.next;
-        }
-        result[0] = new ListNode();
-        result[0].next = temp;
-        result[0] = result[0].next;
-        return result;
-
-    }
-
-    public static String convertDateToBinary(String date) {
-        int year, month , day;
-        year = Integer.parseInt(date.substring(0, 4));
-        month = Integer.parseInt( date.substring(5,7));
-        day = Integer.parseInt( date.substring(8,10));
-        return convert(year)+"-"+convert(month)+"-"+convert(day);
-    }
-
-    private static String convert(int n) {
-        StringBuilder sb = new StringBuilder();
-        while (n > 0) {
-            sb.append(n %2);
-            n = n/2;
-        }
-        return sb.reverse().toString();
-    }
-
-
 
 }
