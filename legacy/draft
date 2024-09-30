@@ -525,3 +525,181 @@ public static int numDecodings(String s) {
             for (int j = coins[i]; j <= amount; j++) dp[j] += dp[j - coins[i]];
         return dp[amount];
     }
+
+
+
+        public static long countOfSubstrings(String word, int k) {
+            int n = word.length();
+            int count = 0;
+            int left = 0;
+            int right = 0;
+            int vowelCount = 0;
+            int consonantCount = 0;
+            Map<Character, Integer> vowelMap = new HashMap<>();
+            while (right < word.length()) {
+                char ch = word.charAt(right);
+                if (isVowel(ch)) {
+                    vowelMap.put(ch, vowelMap.getOrDefault(ch, 0) + 1);
+                    if (vowelMap.get(ch) == 1) {
+                        vowelCount++;
+                    }
+                } else {
+                    consonantCount++;
+                }
+                while (right < n && consonantCount > k) {
+                    char leftChar = word.charAt(left);
+                    if (isVowel(leftChar)) {
+                        vowelMap.put(leftChar, vowelMap.get(leftChar) - 1);
+                        if (vowelMap.get(leftChar) == 0) {
+                            vowelCount--;
+                        }
+                        right++;
+                    } else {
+                        consonantCount--;
+                        left++;
+                    }
+                }
+                if (vowelCount == 5 && consonantCount == k) {
+                    int x = 1, y = 1;
+                    while ( right+1 < n && isVowel(word.charAt(right+1)) ) {
+                        right++;
+                        vowelMap.put(word.charAt(right), vowelMap.get(word.charAt(right)) + 1);
+                        y++;
+                    }
+                    while (left < n && isVowel(word.charAt(left)) && (vowelMap.get(word.charAt(left) ) > 1)) {
+                        vowelMap.put(word.charAt(left), vowelMap.get(word.charAt(left)) -1);
+                        left++;
+                        x++;
+                    }
+                    if (x ==1 && y==1) count++; else if (x ==1 || y==1) count = count + x*y; else count = count + x * y -1;
+                    while (left < right && isVowel(word.charAt(left)) ) {
+                        vowelMap.put(word.charAt(left), vowelMap.get(word.charAt(left)) -1);
+                        if (vowelMap.get(word.charAt(left)) == 0) {
+                            vowelCount--;
+                        }
+                        left++;
+                    }
+                    left++;
+                    consonantCount--;
+                    right = Math.max(left, right);
+                    continue;
+                }
+                right++;
+            }
+
+            return count;
+        }
+
+        private static boolean isVowel(char ch) {
+            return ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u';
+        }
+
+        /*
+        public static int countOfSubstrings(String word, int k) {
+            int count = 0;
+            int n = word.length();
+            for (int i = 0; i < n; i++) {
+                int consonants = 0;
+                Set<Character> vowels = new HashSet<>();
+                for (int j = i; j < n; j++) {
+                    char ch = word.charAt(j);
+                    if (isVowel(ch)) {
+                        vowels.add(ch);
+                    } else if (isConsonant(ch)) {
+                        consonants++;
+                    }
+                    if (vowels.size() == 5 && consonants == k) {
+                        count++;
+                    }
+                }
+            }
+            return count;
+        }
+
+        private static boolean isVowel(char ch) {
+            return ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u';
+        }
+
+        private static boolean isConsonant(char ch) {
+            return !isVowel(ch) && Character.isLetter(ch);
+        }
+    */
+
+        public static char kthCharacter(int k) {
+            List<Character> list = new ArrayList<>();
+            list.add('a');
+            while (list.size() < k) {
+                List<Character> temp = new ArrayList<>(list);
+                for (Character c : temp) {
+                    if (c != 'z') list.add((char) (c+1)); else list.add('a');
+                }
+            }
+            return list.get(k-1);
+        }
+
+        public static long maximumTotalSum(int[] maximumHeight) {
+            Arrays.sort(maximumHeight);
+            int currentMaxHeight = Integer.MAX_VALUE;
+            long result = 0;
+            for (int i = maximumHeight.length-1; i>=0; i--) {
+                currentMaxHeight = Math.min(currentMaxHeight, maximumHeight[i]);
+                if (currentMaxHeight <= 0) return -1;
+                result += currentMaxHeight;
+                currentMaxHeight--;
+            }
+            return result;
+        }
+
+        public static int minElement(int[] nums) {
+            int min = Integer.MAX_VALUE-1;
+            for (int num:nums) {
+                int temp = 0;
+                while(num > 0) {
+                    temp += num % 10;
+                    num /= 10;
+                }
+                if (temp < min) min = temp;
+            }
+            return min;
+        }
+
+
+    public static int numDistinct(String s, String t) {
+        int m = s.length(), n = t.length();
+        int[][] dp = new int[m + 1][n + 1];
+
+        for (int i = 0; i <= m; i++) dp[i][0] = 1;
+        for (int i = 1; i <= n; i++) dp[0][i] = 0;
+
+        for (int i = 1; i <= m; i++)
+            for (int j = 1; j <= n; j++) {
+                if (s.charAt(i - 1) == t.charAt(j - 1)) dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j];
+                else dp[i][j] = dp[i - 1][j];
+            }
+        return dp[m][n];
+    }
+
+    public static TreeNode generateTree(int[] midOrder, int[] postOrder) {
+        if (midOrder == null || postOrder == null || midOrder.length != postOrder.length) return null;
+        TreeNode tree = buildTree(midOrder, postOrder, 0, midOrder.length - 1, 0, postOrder.length - 1);
+        return tree;
+    }
+
+    private static TreeNode buildTree(int[] midOrder, int[] postOrder, int midStart, int midEnd, int postStart, int postEnd) {
+        if (midStart > midEnd || postStart > postEnd) {
+            return null;
+        }
+
+        TreeNode root = new TreeNode(postOrder[postEnd]);
+
+        int rootIndex;
+        for (rootIndex = midStart; rootIndex <= midEnd; rootIndex++) if (midOrder[rootIndex] == root.val) break;
+
+        int leftSize = rootIndex - midStart;
+
+        root.left = buildTree(midOrder, postOrder, midStart, rootIndex - 1, postStart, postStart + leftSize - 1);
+        root.right = buildTree(midOrder, postOrder, rootIndex + 1, midEnd, postStart + leftSize, postEnd - 1);
+
+        return root;
+    }
+
