@@ -1,0 +1,13 @@
+class Solution {
+    public boolean canArrange(int[] arr, int k) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int i : arr) {
+            int temp = k - i % k;
+            temp %= k;
+            if (map.containsKey(temp)) {
+                if (map.get(temp) == 1) map.remove(temp); else map.put( temp, map.get(temp)-1);
+            } else map.put((k - temp) % k, map.getOrDefault(k - temp, 0)+1);
+        }
+        return map.isEmpty();
+    }
+}

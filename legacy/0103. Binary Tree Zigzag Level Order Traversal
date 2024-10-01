@@ -1,0 +1,15 @@
+static List<List<Integer>> result = new ArrayList<>();
+    public static List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        result.clear();
+        traversal(root, 0);
+        for (int i= 1; i<result.size(); i=i+2) Collections.reverse(result.get(i));
+        return result;
+    }
+
+    private static void traversal(TreeNode root, int level) {
+        if (root == null) return;
+        if (level > result.size()-1) result.add(new ArrayList<>());
+        result.get(level).add(root.val);
+        traversal(root.left, level+1);
+        traversal(root.right, level+1);
+    }
