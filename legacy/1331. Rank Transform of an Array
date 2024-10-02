@@ -1,0 +1,8 @@
+ public static int[] arrayRankTransform(int[] arr) {
+        int[] copyArr = Arrays.copyOf(arr,arr.length);
+        Arrays.sort(copyArr);
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int i : copyArr) map.putIfAbsent(i, map.size()+1);
+        for (int i = 0; i<arr.length; i++) arr[i] = map.get(arr[i]);
+        return arr;
+    }

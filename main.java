@@ -5,15 +5,9 @@ class main {
     public static void main(String[] args) {
         // String grid1 = "[[1,0,1,0,1],[1,1,1,1,1],[0,0,0,0,0],[1,1,1,1,1],[1,0,1,0,1]]";
         // String grid2 = "[[0,0,0,0,0],[1,1,1,1,1],[0,1,0,1,0],[0,1,0,1,0],[1,0,0,0,1]]";
-        List<List<Integer>> triangle = new ArrayList<>();
-        System.out.println( zigzagLevelOrder( Utilities.arrayToTreeNode(new Integer[]{1,2,3,4,null,null,5}) ) );
+        String s = "leetcode";
+        System.out.println( wordBreak("leetcode", Arrays.asList("leet","code")) );
     }
-
-
-    public TreeNode buildTree(int[] preorder, int[] inorder) {
-
-    }
-
 
     public static boolean isInterleave(String s1, String s2, String s3) {
         if (s1.length() + s2.length() != s3.length()) return false;
@@ -34,6 +28,7 @@ class main {
 
         return dp[n];
     }
+
 
 
     /*

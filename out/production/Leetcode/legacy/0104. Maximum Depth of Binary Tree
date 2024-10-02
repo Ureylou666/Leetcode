@@ -1,0 +1,13 @@
+static int result;
+    public int maxDepth(TreeNode root) {
+        result = 0;
+        traversal(root, 0);
+        return(result);
+    }
+
+    private static void traversal(TreeNode root, int level) {
+        if (root == null) return;
+        if (level > result-1) result++;
+        traversal(root.left, level+1);
+        traversal(root.right, level+1);
+    }
