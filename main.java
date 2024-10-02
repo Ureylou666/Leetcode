@@ -3,10 +3,9 @@ import java.util.*;
 class main {
 
     public static void main(String[] args) {
-        // String grid1 = "[[1,0,1,0,1],[1,1,1,1,1],[0,0,0,0,0],[1,1,1,1,1],[1,0,1,0,1]]";
         // String grid2 = "[[0,0,0,0,0],[1,1,1,1,1],[0,1,0,1,0],[0,1,0,1,0],[1,0,0,0,1]]";
-        String s = "leetcode";
-        System.out.println( wordBreak("leetcode", Arrays.asList("leet","code")) );
+        String s = "leet code";
+        System.out.println( rob( new int[]{1,7,9,2}) );
     }
 
     public static boolean isInterleave(String s1, String s2, String s3) {

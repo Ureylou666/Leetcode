@@ -1,0 +1,15 @@
+static int sum;
+    public static int maxPathSum(TreeNode root) {
+        sum = root.val;
+        traverse(root);
+        return sum;
+    }
+
+    private static int traverse(TreeNode root) {
+        if (root == null) return 0;
+        int left_gain = Math.max(traverse(root.left), 0);
+        int right_gain = Math.max(traverse(root.right), 0);
+        int current_path = root.val + left_gain + right_gain;
+        sum =  Math.max(sum, current_path);
+        return Math.max(left_gain, right_gain) + root.val;
+    }
