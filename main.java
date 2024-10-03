@@ -4,8 +4,7 @@ class main {
 
     public static void main(String[] args) {
         // String grid2 = "[[0,0,0,0,0],[1,1,1,1,1],[0,1,0,1,0],[0,1,0,1,0],[1,0,0,0,1]]";
-        String s = "leet code";
-        System.out.println( rob( new int[]{1,7,9,2}) );
+        System.out.println( countDigitOne( 11) );
     }
 
     public static boolean isInterleave(String s1, String s2, String s3) {
@@ -29,6 +28,18 @@ class main {
     }
 
 
+    public static int countDigitOne(int n) {
+        if (n == 0) return 0;
+        if (n < 10 ) return 1;
+        int x = 10, y = 1, result = 0;
+        while (x<=n) {
+            result += ((n / x) + 1) * y;
+            x *= 10;
+            y *= 10;
+        }
+        if (n>y) result += Math.min(x, n-y+1);
+        return result;
+    }
 
     /*
     public static boolean isInterleave(String s1, String s2, String s3) {
