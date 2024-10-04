@@ -1,0 +1,14 @@
+public static int nthSuperUglyNumber(int n, int[] primes) {
+        int[] ugly = new int[n];
+        ugly[0] = 1;
+        int x = primes.length;
+        int[] index = new int[x];
+        Arrays.fill(index, 0);
+        for (int i = 1; i<n; i++) {
+            long min = Integer.MAX_VALUE;
+            for (int j = 0; j<x; j++) min = Math.min(min, (long) ugly[index[j]] * primes[j]);
+            ugly[i] = (int) min;
+            for (int j = 0; j<x; j++) if ((long) ugly[index[j]] * primes[j] == min) index[j]++;
+        }
+        return ugly[n-1];
+    }

@@ -1,0 +1,18 @@
+class Solution {
+    public int[] countBits(int n) {
+        List<Integer> two = new ArrayList<>();
+        int temp = 1;
+        while (temp <= n) {
+            two.add(temp);
+            temp *=2;
+        }
+        int[] result = new int[n+1];
+        result[0] = 0;
+        for (Integer integer : two) if (integer <= n) result[integer] = 1;
+        temp = 1;
+        for (int i = 2; i <= n; i++) {
+            if (result[i] != 1) result[i] = result[i - temp] + result[temp]; else temp *=2;
+        }
+        return result;
+    }
+}
