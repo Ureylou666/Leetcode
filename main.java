@@ -7,6 +7,14 @@ class main {
         System.out.println( countDigitOne( 11) );
     }
 
+    public static long dividePlayers(int[] skill) {
+        Arrays.sort(skill);
+        long result = 0;
+        int sum = skill[0] + skill[skill.length -1];
+        for (int i = 0; i < skill.length / 2; i++) if (skill[i] + skill[skill.length - 1 - i] != sum) return -1; else result += skill[i] * skill[skill.length -1 -i];
+        return result;
+    }
+
     public static boolean isInterleave(String s1, String s2, String s3) {
         if (s1.length() + s2.length() != s3.length()) return false;
 
