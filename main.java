@@ -4,19 +4,7 @@ class main {
 
     public static void main(String[] args) {
         // String grid2 = "[[0,0,0,0,0],[1,1,1,1,1],[0,1,0,1,0],[0,1,0,1,0],[1,0,0,0,1]]";
-        System.out.println( countNumbersWithUniqueDigits( 4));
-    }
-
-    public static int countNumbersWithUniqueDigits(int n) {
-        int[] dp = new int[n+1];
-        dp[0] = 1;
-        if (n == 0) return 1;
-        dp[1] = 10;
-        for (int i = 2; i<=n ; i++) {
-            dp[i] = dp[i-1] * (10 - i );
-            for (int j = 0; j < i; j++) dp[i] = dp[i] + dp[j];
-        }
-        return dp[n];
+        System.out.println( checkInclusion( "adc" , "a") );
     }
 
     public static int maxEnvelopes(int[][] envelopes) {

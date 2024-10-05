@@ -1,0 +1,25 @@
+public static List<Integer> largestDivisibleSubset(int[] nums) {
+        Arrays.sort(nums);
+        int[] dp = new int[nums.length];
+        List<Integer>[] memory = new ArrayList[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            memory[i] = new ArrayList<>();
+            memory[i].add(nums[i]);
+            dp[i] = 1;
+        }
+        int max = 1, index =0;
+        for (int i=1; i<nums.length; i++){
+            index = -1;
+            for (int j = 0; j < i; j++) if (nums[i] % nums[j] == 0 && dp[i] < dp[j] +1) {
+                dp[i] = dp[j] + 1;
+                memory[i] = new ArrayList<>(memory[j]);
+                memory[i].add(nums[i]);
+            }
+        }
+        index = 0;
+        for (int i=0; i<nums.length; i++) if (max < memory[i].size()) {
+            max = memory[i].size();
+            index = i;
+        }
+        return memory[index];
+    }
