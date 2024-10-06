@@ -1,0 +1,23 @@
+class Solution {
+    private HashMap<Long, Integer> memo = new HashMap<>();
+    public int integerReplacement(int n) {
+        return helper((long)n);
+    }
+    private int helper(long n) {
+        if (n == 1) {
+            return 0;
+        }
+        if (memo.containsKey(n)) {
+            return memo.get(n);
+        }
+        int result;
+        if (n % 2 == 0) {
+            result = 1 + helper(n / 2);
+        } else {
+
+            result = 1 + Math.min(helper(n + 1), helper(n - 1));
+        }
+        memo.put(n, result);
+        return result;
+    }
+}
