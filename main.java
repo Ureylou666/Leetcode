@@ -4,8 +4,17 @@ class main {
 
     public static void main(String[] args) {
         // String grid2 = "[[0,0,0,0,0],[1,1,1,1,1],[0,1,0,1,0],[0,1,0,1,0],[1,0,0,0,1]]";
-        System.out.println( remainingMethods( 5,0, new int[][]{{1,2}, {0,2}, {0,1}, {3,4}}) );
+        System.out.println( minLength( "ABCDEFGH") );
     }
+
+    public static int minLength(String s) {
+        while (s.contains("AB") || s.contains("CD")) {
+            s = s.replaceAll("AB","");
+            s = s.replaceAll("CD","");
+        }
+        return s.length();
+    }
+
 
     static Set<Integer> bad = new HashSet<Integer>();
     public static List<Integer> remainingMethods(int n, int k, int[][] invocations) {
