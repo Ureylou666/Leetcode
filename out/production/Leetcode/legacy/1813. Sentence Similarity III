@@ -1,0 +1,23 @@
+class Solution {
+    public static boolean areSentencesSimilar(String sentence1, String sentence2) {
+        if (Objects.equals(sentence1, sentence2)) return true;
+        String[] s1 = sentence1.split(" ");
+        String[] s2 = sentence2.split(" ");
+        return check(s1,s2) || check(s2,s1);
+    }
+
+    private static boolean check(String[] s1, String[] s2) {
+        int i = 0 , j, top, bottom;
+        while (i < s1.length && i < s2.length && Objects.equals(s1[i], s2[i]) ) i++;
+        if (i == s1.length || i == s2.length) return true;
+        top = i-1;
+        i = s1.length-1; j = s2.length -1;
+        while (i>top && j>top && Objects.equals(s1[i], s2[j]) ) {
+            i--;
+            j--;
+        }
+        if (i < 0 || j < 0) return true;
+        bottom = i+1;
+        return top == bottom-1 && top >=0 && bottom <=s2.length;
+    }
+}

@@ -1,0 +1,18 @@
+class Solution {
+    public int findSubstringInWraproundString(String s) {
+        int n = s.length();
+        int[] dp = new int[26];
+        int maxlength = 1;
+        for (int i=0; i<n; i++) {
+            if ( (i>0) && (s.charAt(i) -s.charAt(i-1) + 26) % 26 == 1) {
+                maxlength++;
+            } else {
+                maxlength = 1;
+            }
+            dp[s.charAt(i)-'a'] = Math.max(dp[s.charAt(i)-'a'] , maxlength);
+        }
+        int result = 0;
+        for (int i:dp) result += i;
+        return result;
+    }
+}

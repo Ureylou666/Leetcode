@@ -1,0 +1,27 @@
+class Solution {
+    public boolean makesquare(int[] matchsticks) {
+        int total = 0;
+        for (int i:matchsticks) total += i;
+        if (total % 4 != 0) return false;
+        Arrays.sort(matchsticks);
+        return check(matchsticks, matchsticks.length -1 , 0,0,0,0, total / 4);
+    }
+
+    private boolean check(int[] match, int index, int top, int left, int right, int bottom, int target) {
+        if (top == target && left == target && right == target && bottom == target) return true;
+        if (top > target || left > target || right > target || bottom > target) return false;
+
+        int val = match[index--];
+
+        boolean next = check(match, index,top+val, left, right, bottom, target);
+        if (next) return true;
+        next = check(match, index,top, left+val, right, bottom, target);
+        if (next) return true;
+        next = check(match, index,top, left, right+val, bottom, target);
+        if (next) return true;
+        next = check(match, index,top, left, right, bottom+val, target);
+        if (next) return true;
+
+        return false;
+    }
+}
