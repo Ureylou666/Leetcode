@@ -1,0 +1,20 @@
+class Solution {
+    static List<List<Integer>> result = new ArrayList<>();
+    static public List<List<Integer>> subsets(int[] nums) {
+        result.clear();
+        result.add(new ArrayList<>());
+        backTracking(nums, 0 , new ArrayList<>());
+        return result;
+    }
+
+    static private void backTracking(int[] nums, int index, List<Integer> curr) {
+        if (index > nums.length) return;
+        for (int i=index; i<nums.length; i++) {
+            curr.add(nums[i]);
+            result.add(new ArrayList<>(curr));
+            backTracking(nums, i+1, curr);
+            curr.removeLast();
+        }
+        return;
+    }
+}

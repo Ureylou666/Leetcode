@@ -1,0 +1,26 @@
+class Solution {
+    static List<List<Integer>> result = new ArrayList<>();
+    public List<List<Integer>> permute(int[] nums) {
+        result.clear();
+        boolean[] used = new boolean[nums.length];
+        Arrays.fill(used, false);
+        backTracking(nums, used, new ArrayList<>());
+        return result;
+    }
+
+    private static void backTracking(int[] nums, boolean[] used,  List<Integer> curr) {
+        if (curr.size() == nums.length) {
+            result.add(new ArrayList<>(curr));
+            return;
+        }
+        for (int i=0; i<nums.length; i++) {
+            if (!used[i]) {
+                used[i] = true;
+                curr.add(nums[i]);
+                backTracking(nums, used, curr);
+                curr.removeLast();
+                used[i] = false;
+            }
+        }
+    }
+}

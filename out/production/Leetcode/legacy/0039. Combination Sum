@@ -1,0 +1,22 @@
+static List<List<Integer>> result = new ArrayList<>();
+    public static List<List<Integer>> combinationSum(int[] candidates, int target) {
+        result.clear();
+        Arrays.sort(candidates);
+        calculate(candidates,0, target, new ArrayList<>());
+        return result;
+    }
+
+    private static void calculate(int[] candidates, int index, int target, List<Integer> curr) {
+        if (target == 0) {
+            result.add(new ArrayList<>(curr));
+            return;
+        }
+        for (int i = index; i < candidates.length && target - candidates[i] >= 0; i++) {
+            curr.add(candidates[i]);
+            target -= candidates[i];
+            calculate(candidates, i, target, curr);
+            target += candidates[i];
+            curr.removeLast();
+        }
+        return;
+    }
