@@ -1,0 +1,24 @@
+class Solution {
+    public int[][] generateMatrix(int n) {
+        if (n==1) return new int[][]{{1}};
+        int[][] result = new int[n][n];
+        int x = 0, count = 1;
+        int total = n * n;
+        while (true) {
+            // right
+            for (int i = x; i<n; i++) result[x][i] = count++;
+            if (count > total) return result;
+            // down
+            for (int i = x+1; i<n; i++) result[i][n-1] = count++;
+            if (count > total) return result;
+            // left
+            for (int i = n-2; i>=x; i--) result[n-1][i] = count++;
+            if (count > total) return result;
+            // up
+            for (int i = n-2; i>x; i--) result[i][x] = count++;
+            if (count > total) return result;
+            n--;
+            x++;
+        }
+    }
+}

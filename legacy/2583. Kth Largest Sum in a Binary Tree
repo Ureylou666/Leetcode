@@ -1,0 +1,14 @@
+ public static long kthLargestLevelSum(TreeNode root, int k) {
+        List<Long> result = new ArrayList<>();
+        bfs(root, 0 , result);
+        if (result.size() < k) return -1;
+        Collections.sort(result);
+        return result.get(result.size()-k);
+    }
+
+    private static void bfs(TreeNode root, int level, List<Long> result) {
+        if (root == null) return;
+        if (result.size() <= level) result.add((long) root.val); else result.set(level, result.get(level)+root.val);
+        bfs(root.left, level+1, result);
+        bfs(root.right, level+1, result);
+    }

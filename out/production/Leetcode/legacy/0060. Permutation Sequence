@@ -1,0 +1,25 @@
+class Solution {
+    static List<Integer> total = Arrays.asList(1,1,2,6,24,120,720,5040,40320,403200);
+    public static String getPermutation(int n, int k) {
+        if (n==1) return "1";
+        List<Integer> list = new ArrayList<>();
+        for (int i= 1; i<=n;i++) list.add(i);
+        return helper(list, n,k,"");
+    }
+
+    private static String helper(List<Integer> list, int n, int k , String pre){
+        if (n == 0) return pre;
+        int index;
+        if (k <= total.get(n-1)) index = 1;
+        if (k == total.get(n)) {
+            index = n;
+            k = total.get(n-1);
+        } else {
+            index = k % total.get(n-1) == 0 ? k / total.get(n-1) : k / total.get(n-1) +1;
+            k = k - total.get(n-1) * (index-1);
+        }
+        pre = pre + list.get(index-1);
+        list.remove(index-1);
+        return helper(list,n-1, k , pre);
+    }
+}

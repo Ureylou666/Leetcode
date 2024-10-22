@@ -1,0 +1,22 @@
+public static int maxUniqueSplit(String s) {
+        Set<String> sets = new HashSet<>();
+        int max = backtrack(sets, s, 0);
+        return max;
+    }
+
+    private static int backtrack(Set<String> sets, String s, int max){
+        if (s.isEmpty()) {
+            if (sets.size()>max) return sets.size();
+        }
+        int index = 1;
+        while (index <= s.length()) {
+            String temp = s.substring(0,index);
+            if (!sets.contains(temp)) {
+                sets.add(temp);
+                max = Math.max( backtrack(sets, s.substring(index), max), max);
+                sets.remove(temp);
+            }
+            index++;
+        }
+        return max;
+    }

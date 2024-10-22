@@ -1,0 +1,17 @@
+class Solution {
+     public static double myPow(double x, int n) {
+        if (x == 1 || x == 0) return x;
+        if (n == 0) return 1;
+        long m = n;
+        if (n<0) {
+            x = 1 / x;
+            m = Math.abs(m);
+        }
+        return backTrack(x, m);
+    }
+
+    private static double backTrack(double x , long n) {
+        if (n == 1) return x;
+        if (n % 2 == 0) return Math.pow(backTrack(x, n /2), 2); else return x * backTrack(x, n-1);
+    }
+}
