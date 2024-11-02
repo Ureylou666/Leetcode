@@ -780,3 +780,201 @@ public static int numDecodings(String s) {
         for (int i:dp) result = Math.max(result, i);
         return result;
     }
+
+ static List<Integer> list = Arrays.asList(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311, 313, 317, 331, 337, 347, 349, 353, 359, 367, 373, 379, 383, 389, 397, 401, 409, 419, 421, 431, 433, 439, 443, 449, 457, 461, 463, 467, 479, 487, 491, 499, 503, 509, 521, 523, 541, 547, 557, 563, 569, 571, 577, 587, 593, 599, 601, 607, 613, 617, 619, 631, 641, 643, 647, 653, 659, 661, 673, 677, 683, 691, 701, 709, 719, 727, 733, 739, 743, 751, 757, 761, 769, 773, 787, 797, 809, 811, 821, 823, 827, 829, 839, 853, 857, 859, 863, 877, 881, 883, 887, 907, 911, 919, 929, 937, 941, 947, 953, 967, 971, 977, 983, 991, 997);
+
+    public static int minOperations(int[] nums) {
+        int count = 0;
+        boolean h;
+        for (int i = nums.length-2; i >= 1; i--) if (nums[i] > nums[i+1]){
+            int index = 0, temp = nums[i], temp2 = 1;
+            h = false;
+            if (nums[i+1] == 2) {
+                if (nums[i] % 2 != 0 ) return -1; else {
+                    if (nums[i] > 2) {
+                        nums[i] = 2;
+                        h = true;
+                    }
+                }
+            } else {
+                while (index < list.size() && list.get(index) < temp && nums[i] > nums[i + 1]) {
+                    if (nums[i] % list.get(index) > 0) index++;
+                    else {
+                        nums[i] /= list.get(index);
+                        h = true;
+                        temp2 *= list.get(index);
+                    }
+                }
+            }
+            if (temp2 == temp && !h) return -1;
+            if (h) count++;
+            if (nums[i] > nums[i+1]) return -1;
+        }
+        for (int i = nums[1]; i>1 && nums[0] > nums[1]; i--) if (nums[0] % i ==0) {
+            count++;
+            break;
+        }
+        return count;
+    }
+
+    private int findRow(int[][] matrix, int target, int left, int right) {
+        if (left >= right) return left;
+        // check the first column
+        if (target >= matrix[ left+(right-left)/2][0]) return findRow(matrix, target, left+(right-left)/2, right);
+        else  if (target < matrix[ left+(right-left)/2][0]) return findRow(matrix, target, left, left+(right-left)/2);
+        return 0;
+    }
+
+    private int findColumn(int[][] matrix, int target, int row, int left, int right) {
+        if (left >= right) return left;
+        // check the first column
+        if (target >= matrix[row][ left+(right-left)/2]) return findColumn(matrix, target, row,left+(right-left)/2, right);
+        else  if (target < matrix[row][ left+(right-left)/2]) return findColumn(matrix, target, row, left, left+(right-left)/2);
+        return 0;
+    }
+
+    public static int possibleStringCount(String word, int k) {
+        if (word.length() == 1) return 1;
+        HashMap<Character, Integer> map = new HashMap<>();
+        for (int i = 1; i<word.length();i++) if (word.charAt(i) == word.charAt(i-1)) {
+            char c = word.charAt(i);
+            if (map.containsKey(c)) map.put(c, map.get(c)+1); else map.put(c,1);
+        }
+        int result = 1;
+        for (char c:map.keySet()) if (map.get(c) > 0) result += map.get(c);
+        return result;
+    }
+
+    public static int[] findSubtreeSizes(int[] parent, String s) {
+        int[] ParentBackup = new int[parent.length]; // 新数组用于存储修改后的 parent 信息
+        System.arraycopy(parent, 0, ParentBackup, 0, parent.length);
+        for (int i = 1; i<parent.length; i++){
+            int temp = find(parent,s, parent[i],s.charAt(i));
+            if (temp != -1) ParentBackup[i] = temp;
+        }
+        HashMap<Integer, List<Integer>> map = new HashMap<>();
+        for (int i = 0; i<ParentBackup.length; i++) {
+            int temp = ParentBackup[i];
+            List<Integer> temp2 = new ArrayList<>();
+            if (map.containsKey(temp)) temp2 = map.get(temp);
+            temp2.add(i);
+            map.put(temp, temp2);
+        }
+        int[] result = new int[parent.length];
+        boolean[] check = new boolean[parent.length];
+        Arrays.fill(check, false);
+        result[0] = caculate(map, 0, check, result);
+        return result;
+    }
+
+    private static int find(int[] parent, String s, int curr, char c){
+        if (curr == -1) return -1;
+        if (c == s.charAt(curr)) return curr; else return find(parent, s,parent[curr],c);
+    }
+
+    private static int caculate(HashMap<Integer, List<Integer>> map, int curr, boolean[] check, int[] result) {
+        if (check[curr]) return result[curr];
+        if (map.get(curr) == null) {
+            check[curr] = true;
+            result[curr] = 1;
+            return result[curr];
+        }
+        result[curr] = 1;
+        for (int i : map.get(curr)) result[curr] += caculate(map, i, check, result);
+        check[curr] = true;
+        return result[curr];
+    }
+
+    public static long maxScore(int[] nums) {
+        long result = 0;
+        if (nums.length == 1) return (long) nums[0] *nums[0] ;
+        List<Integer> primes = Arrays.asList(2,3,5,7,11,13,17,19,23,29);
+        Arrays.sort(nums);
+        int[][] factors = new int[nums.length][10];
+        for (int i = 0; i<nums.length; i++) calc(nums[i], i, factors, primes);
+        for (int i = -1; i<nums.length; i++) {
+            long temp = getResult(i, factors, primes);
+            result = Math.max(result, temp);
+        }
+        return result;
+    }
+
+    private static void calc(int num, int n,  int[][] factors, List<Integer> primes) {
+        for (int i = 0; i < primes.size() && num >= primes.get(i); i++) {
+            while (num % primes.get(i) == 0) {
+                factors[n][i] ++;
+                num = num / primes.get(i);
+            }
+        }
+    }
+
+    private static long getResult(int n, int[][] factors, List<Integer> primes) {
+        long lcm = 1 , gcd = 1;
+        for (int i = 0; i<factors[0].length; i++) {
+            int max = -1, min = 99;
+            for (int j = 0; j < factors.length;j++) if (j!=n) {
+                if (max < factors[j][i]) max = factors[j][i];
+                if (min > factors[j][i]) min = factors[j][i];
+            }
+            gcd = (long) (gcd * Math.pow(primes.get(i), min));
+            lcm = (long) (lcm * Math.pow(primes.get(i), max));
+        }
+        return gcd*lcm;
+    }
+
+    public static int lengthAfterTransformations(String s, int t) {
+        long temp = s.length();
+        for (char c: s.toCharArray()) if (t > ('z' - c)) {
+            int k = t - ('z'-c + 1);
+           // temp = temp + 1 + calcNum(k) ;
+        }
+        return (int) (temp % 1000000007);
+    }
+
+    public static int countSquares(int[][] matrix) {
+        int result = 0;
+        for (int i=0;i<matrix.length;i++)
+            for (int j=0;j<matrix[0].length;j++)
+                if (matrix[i][j] == 1) result += getSquare(matrix, i,j);
+        return result;
+    }
+
+    private static int getSquare(int[][] matrix, int x, int y) {
+        int result = 1;
+        int n = matrix.length, m = matrix[0].length;
+        boolean check = true;
+        for (int i = 2; i<=Math.min(n-x, m-y) && check; i++ ) {
+            for (int k = x; k<x+i && check; k++) if (matrix[k][y+i-1] == 0) {
+                check = false;
+                break;
+            }
+            for (int k = y; k<y+i && check; k++) if (matrix[x+i-1][k] == 0) {
+                check = false;
+                break;
+            }
+            if (check) result++;
+        }
+        return result;
+    }
+
+    public static int longestSquareStreak(int[] nums) {
+        TreeMap<Integer, Integer> list = new TreeMap<>();
+        HashSet<Integer> set = new HashSet<>();
+        for (int num : nums) {
+            set.add(num);
+            if ((int) Math.sqrt(num) * (int) Math.sqrt(num) == num) list.put(num,1);
+        }
+        int result = -1;
+        while (!list.isEmpty()) {
+            int temp = 0, k = list.firstKey();
+            if (set.contains((int) Math.sqrt(k))) temp++;
+            while (set.contains(k)) {
+                list.remove(k);
+                k = k*k;
+                temp++;
+            }
+            result = Math.max(result, temp);
+        }
+        if (result < 2) return -1;
+        return result;
+    }

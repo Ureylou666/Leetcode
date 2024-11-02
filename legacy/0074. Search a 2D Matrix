@@ -1,0 +1,29 @@
+class Solution {
+    public static boolean searchMatrix(int[][] matrix, int target) {
+        int i = binary(-1, 0, matrix.length, target, matrix);
+        int j = binary(i, 0, matrix[0].length, target, matrix);
+        return target == matrix[i][j];
+    }
+
+    private static int binary(int row, int left, int right, int target, int[][] matrix) {
+        if (left == right || left == right - 1)
+            return left;
+        int mid = left + (right - left) / 2;
+        // check the first column
+        if (row < 0) {
+            if (target > matrix[mid][0])
+                return binary(row, mid, right, target, matrix);
+            else if (target < matrix[mid][0])
+                return binary(row, left, mid, target, matrix);
+            else
+                return mid;
+        } else {
+            if (target > matrix[row][mid])
+                return binary(row, mid, right, target, matrix);
+            else if (target < matrix[row][mid])
+                return binary(row, left, mid, target, matrix);
+            else
+                return mid;
+        }
+    }
+}

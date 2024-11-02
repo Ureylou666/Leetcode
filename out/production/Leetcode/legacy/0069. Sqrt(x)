@@ -1,0 +1,13 @@
+class Solution {
+    public static int mySqrt(int x) {
+        if (x < 2) return x;
+        return binary(1,Math.min(x, (int) Math.pow(2,16)),Math.min(x / 2, (int) Math.pow(2,16)),x);
+    }
+
+    private static int binary(int left, int right, int x, int n) {
+        if ( (long) x * x <= n && ( (long) (x + 1) * (x+1)) > (long) n ) return x;
+        if ((long) x * x< n) return binary(x, right,x + (right-x)/2, n);
+        if ((long) x * x > n) return binary(left, x, left+(x - left)/2, n);
+        return x;
+    }
+}

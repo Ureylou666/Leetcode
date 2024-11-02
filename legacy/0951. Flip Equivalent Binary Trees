@@ -1,0 +1,64 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+     public static boolean flipEquiv(TreeNode root1, TreeNode root2) {
+        if (root1 == null && root2 == null) return true;
+        if (root1 == null || root2 == null) return false;
+        HashMap<Integer, List<Integer>> map = new HashMap<>();
+        getSon(root1, map);
+        return check(root2,map);
+    }
+
+    private static void getSon(TreeNode root, HashMap<Integer, List<Integer>> map) {
+        List<Integer> temp = new ArrayList<>();
+        if (root.left == null && root.right == null) {
+            map.put(root.val, temp);
+            return;
+        }
+        if (root.left == null) {
+            temp.add(root.right.val);
+            map.put(root.val, temp);
+            getSon(root.right, map);
+            return;
+        }
+        if (root.right == null) {
+            temp.add(root.left.val);
+            map.put(root.val, temp);
+            getSon(root.left, map);
+            return;
+        }
+        temp.add(root.left.val);
+        temp.add(root.right.val);
+        map.put(root.val, temp);
+        getSon(root.left, map);
+        getSon(root.right, map);
+        return;
+    }
+
+    private static boolean check(TreeNode root, HashMap<Integer, List<Integer>> map) {
+        if (!map.containsKey(root.val)) return false;
+        if (root.left == null && root.right == null) {
+            return map.get(root.val).isEmpty();
+        }
+        if (root.left == null) {
+            return map.get(root.val).contains(root.right.val) && map.get(root.val).size()==1 && check(root.right, map);
+        }
+        if (root.right == null) {
+            return map.get(root.val).contains(root.left.val) && map.get(root.val).size()==1 && check(root.left, map);
+        }
+        return map.get(root.val).contains(root.left.val) && map.get(root.val).contains(root.right.val) && map.get(root.val).size()==2 && check(root.left, map) && check(root.right,map);
+    }
+}

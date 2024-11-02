@@ -1,0 +1,22 @@
+class Solution {
+    public String simplifyPath(String path) {
+        List<String> strs = new ArrayList<>(Arrays.asList(path.split("/")));
+        int i = 1;
+        while (i< strs.size() && i>=0 ) {
+            if (strs.get(i).equals("..")) {
+                if (i == 0) {
+                    strs.removeFirst();
+                } else {
+                    strs.remove(i-1);
+                    strs.remove(i-1);
+                    i--;
+                }
+            }
+            else if (strs.get(i).equals(".")) strs.remove(i);else if (strs.get(i).isEmpty()) strs.remove(i); else i++;
+        }
+        StringBuilder sb = new StringBuilder();
+        for (i = 0; i<strs.size(); i++) if (!strs.get(i).isEmpty()) sb.append("/").append(strs.get(i));
+        if (sb.isEmpty()) sb.append("/");
+        return sb.toString();
+    }
+}
