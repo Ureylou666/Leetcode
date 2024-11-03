@@ -96,19 +96,21 @@ class main {
     public static void main(String[] args) {
         // String grid2 = "[[0,0,0,0,0],[1,1,1,1,1],[0,1,0,1,0],[0,1,0,1,0],[1,0,0,0,1]]";
         //out.println( Math.pow(2,20) );
-        out.println( countArrangement(15)) ;
+        out.println( rotateString("abcde", "bcdea")) ;
     }
 
-    //public static int[][] updateMatrix(int[][] mat) {
-    //    int m = mat.length, n = mat[0].length;
-    //    int[][] array = new int[m][n];
-//
-    //}
-//
-    //private static int calc(int[][] mat, int[][] result, int x, int y) {
-    //    if (x<0 || y<0 || x>=mat.length || y >= mat[0].length) return -1;
-    //    if (mat[x][y] == 0) return 0;
-    //
-    //}
+    // public static int checkRecord(int n) {
+    //     int modulo = (int) Math.pow(10,9) + 7;
+    //     long temp = 4, result;
+    //     if (n == 1) return 3;
+    //     if (n == 2) return 8;
+    //     for (int i = 3; i<n; i++) {
+    //         temp = temp * 2 - 1;
+    //         temp = temp % modulo;
+    //     }
+    //     result = temp * (n + 2) % modulo - 1;
+    //     return (int) result;
+    // }
+
 
 }

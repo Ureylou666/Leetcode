@@ -1,0 +1,36 @@
+class Solution {
+    private static final int[][] DIRECTIONS = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+    public static int minTimeToReach(int[][] moveTime) {
+        int m = moveTime.length, n = moveTime[0].length;
+        int[][] dist = new int[m][n];
+        for (int[] row : dist) {
+            Arrays.fill(row, Integer.MAX_VALUE);
+        }
+        dist[0][0] = 0;
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[2], b[2]));
+        pq.offer(new int[]{0, 0, 0,1});
+        while (!pq.isEmpty()) {
+            int[] current = pq.poll();
+            int x = current[0];
+            int y = current[1];
+            int cost = current[2];
+            int step = current[3];
+            if (x == m - 1 && y == n - 1) {
+                return cost;
+            }
+            for (int[] direction : DIRECTIONS) {
+                int newX = x + direction[0];
+                int newY = y + direction[1];
+                int wait = (step % 2 ==1 ) ? 1:2;
+                if (newX >= 0 && newX < m && newY >= 0 && newY < n) {
+                    int newCost = Math.max(cost+wait, moveTime[newX][newY] + wait);
+                    if (newCost < dist[newX][newY]) {
+                        dist[newX][newY] = newCost;
+                        pq.offer(new int[]{newX, newY, newCost,step+1});
+                    }
+                }
+            }
+        }
+        return -1;
+    }
+}

@@ -1,0 +1,19 @@
+class Solution {
+    public static int countArrangement(int n) {
+        boolean[] used = new boolean[n+1];
+        Arrays.fill(used, false);
+        return backTrack(1,used);
+    }
+
+    private static int backTrack(int index, boolean[] used) {
+        int result = 0;
+        if (index >= used.length) return 1;
+        for (int i = 1; i<used.length; i++) if (!used[i] && (i % index ==0 || index % i ==0)) {
+            used[i] = true;
+            result += backTrack(index+1,used);
+            used[i] = false;
+        }
+        return result;
+    }
+
+}
