@@ -1,0 +1,27 @@
+class Solution {
+    public static boolean search(int[] nums, int target) {
+        if (nums.length == 1)
+            return nums[0] == target;
+        return bi(nums, 0, nums.length - 1, target, false);
+    }
+
+    private static boolean bi(int[] nums, int left, int right, int target, boolean ordered) {
+        if (right - left < 2)
+            return nums[left] == target || nums[right] == target;
+        int mid = left + (right - left) / 2;
+        if (nums[mid] == target)
+            return true;
+        if (ordered) {
+            if (nums[mid] < target)
+                return bi(nums, mid, right, target, true);
+            if (nums[mid] > target)
+                return bi(nums, left, mid, target, true);
+        } else {
+            if (nums[mid - 1] > nums[mid + 1])
+                return bi(nums, left, mid - 1, target, true) || bi(nums, mid + 1, right, target, false);
+            else
+                return bi(nums, left, mid - 1, target, false) || bi(nums, mid + 1, right, target, false);
+        }
+        return false;
+    }
+}

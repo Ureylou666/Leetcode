@@ -1,0 +1,22 @@
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        int x = 0, y = 0;
+        while (y < nums.length) {
+            int count = 0;
+            int temp = nums[y];
+            while (y < nums.length && nums[y] == temp) {
+                y++;
+                count++;
+            }
+            if (count == 1) {
+                nums[x] = temp;
+                x++;
+            } else {
+                nums[x] = temp;
+                nums[x+1] = temp;
+                x += 2;
+            }
+        }
+        return x;
+    }
+}

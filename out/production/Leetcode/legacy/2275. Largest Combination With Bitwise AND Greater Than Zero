@@ -1,0 +1,15 @@
+class Solution {
+    public int largestCombination(int[] candidates) {
+        int[] count = new int[25];
+       for (int candidate : candidates) {
+           int i = 0;
+           while (candidate > 0) {
+               count[++i] += candidate % 2;
+               candidate /= 2;
+           }
+       }
+       int result = 0;
+       for (int num : count) result = Math.max(result, num);
+       return result;
+    }
+}

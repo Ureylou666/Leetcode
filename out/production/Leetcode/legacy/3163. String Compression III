@@ -1,0 +1,17 @@
+class Solution {
+    public String compressedString(String word) {
+        StringBuilder sb = new StringBuilder();
+        int index = 0;
+        while (index < word.length()) {
+            char c = word.charAt(index);
+            int count = 0;
+            while (index < word.length() && word.charAt(index) == c) {
+                count++;
+                index++;
+            }
+            for (int j = 0; j<count / 9; j++) sb.append("9").append(c);
+            if (count % 9 !=0) sb.append(count % 9).append(c);
+        }
+        return sb.toString();
+    }
+}

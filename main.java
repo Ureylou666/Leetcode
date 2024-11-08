@@ -96,21 +96,21 @@ class main {
     public static void main(String[] args) {
         // String grid2 = "[[0,0,0,0,0],[1,1,1,1,1],[0,1,0,1,0],[0,1,0,1,0],[1,0,0,0,1]]";
         //out.println( Math.pow(2,20) );
-        out.println( rotateString("abcde", "bcdea")) ;
+        out.println( getMaximumXor( new int[]{0,1,1,3}, 2 ) ) ;
     }
 
-    // public static int checkRecord(int n) {
-    //     int modulo = (int) Math.pow(10,9) + 7;
-    //     long temp = 4, result;
-    //     if (n == 1) return 3;
-    //     if (n == 2) return 8;
-    //     for (int i = 3; i<n; i++) {
-    //         temp = temp * 2 - 1;
-    //         temp = temp % modulo;
-    //     }
-    //     result = temp * (n + 2) % modulo - 1;
-    //     return (int) result;
-    // }
+    public static int[] getMaximumXor(int[] nums, int maximumBit) {
+        int[] result = new int[nums.length];
+        int sum = nums[0];
+        int index = nums.length-1;
+        int max = (int) Math.pow(2, maximumBit) - 1;
+        while (index >= 0) {
+            result[index] = sum ^ max;
+            index--;
+            if (index >=0) sum = sum ^ nums[nums.length - 1 - index];
+        }
+        return result;
+    }
 
 
 }
