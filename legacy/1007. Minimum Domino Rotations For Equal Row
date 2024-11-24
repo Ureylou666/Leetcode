@@ -1,0 +1,21 @@
+class Solution {
+    public static int minDominoRotations(int[] tops, int[] bottoms) {
+        int[] cTop = new int[6], cBottom = new int[6];
+        for (int top : tops) cTop[top-1]++;
+        for (int bottom : bottoms) cBottom[bottom-1]++;
+        int  result = tops.length + 1;
+        for (int i = 0; i< 6; i++) if (cTop[i] + cBottom[i] >= tops.length) {
+            int temp = (cTop[i] > cBottom[i]) ? swap(tops, bottoms, i+1) : swap(bottoms,tops,i+1);
+            if (temp >= 0) result = Math.min(result, temp);
+        }
+        return result>tops.length ? -1 : result;
+    }
+
+    private static int swap(int[] more, int[] less, int goal){
+        int count =0;
+        for (int i = 0; i< more.length; i++) if (more[i] != goal) {
+            if (less[i] == goal) count++; else return -1;
+        }
+        return count;
+    }
+}

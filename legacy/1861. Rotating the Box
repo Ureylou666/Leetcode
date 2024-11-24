@@ -1,0 +1,26 @@
+class Solution {
+    public char[][] rotateTheBox(char[][] box) {
+        int n = box.length, m = box[0].length;
+        char[][] result = new char[m][n];
+        // rotate
+        for (int i=0; i<m; i++)
+            for (int j=0;j<n;j++)
+                result[i][j] = box[n-j-1][i];
+        // check each column
+        for (int i = 0; i<n; i++) {
+            int  index = 0;
+            int count;
+            while (index < m) {
+                count = 0;
+                while (index < m && result[index][i] != '*') {
+                    if (result[index][i] == '#') count ++;
+                    result[index][i] = '.';
+                    index++;
+                }
+                for (int j=index-1; j>=index-count;j--) result[j][i] = '#';
+                index++;
+            }
+        }
+        return result;
+    }
+}

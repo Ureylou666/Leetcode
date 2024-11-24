@@ -1,0 +1,15 @@
+ public static int countUnguarded(int m, int n, int[][] guards, int[][] walls) {
+        int[][] map = new int[m][n];
+        for (int[] wall:walls) map[wall[0]][wall[1]]=-1;
+        for (int[] guard : guards) map[guard[0]][guard[1]] = -1;
+        for (int[] guard : guards) {
+            for (int i= guard[1]-1; i>=0 && map[guard[0]][i] != -1; i--) map[guard[0]][i]++;
+            for (int i= guard[1]+1; i<n && map[guard[0]][i] != -1; i++) map[guard[0]][i]++;
+            for (int i= guard[0]-1; i>=0 && map[i][guard[1]] != -1; i--) map[i][guard[1]]++;
+            for (int i= guard[0]+1; i<m && map[i][guard[1]] != -1; i++) map[i][guard[1]]++;
+        }
+        int result = 0 ;
+        for (int i=0; i<m; i++)
+            for (int j=0; j<n; j++) if (map[i][j]==0) result++;
+        return result;
+    }

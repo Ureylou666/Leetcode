@@ -1,0 +1,20 @@
+class Solution {
+    public int[] decrypt(int[] code, int k) {
+        int[] result = new int[code.length];
+        Arrays.fill(result, 0);
+        if (k==0) return result;
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i<2;i++)
+            for (int c : code) list.add(c);
+        int[] pre = new int[code.length*2];
+        pre[0] = code[0];
+        for (int i=1;i<list.size();i++) pre[i] = pre[i-1]+list.get(i);
+
+        if (k<0) {
+            for (int i=code.length; i<code.length*2; i++) result[i-code.length] = pre[i-1] - pre[i-1+k];
+            return result;
+        }
+        for (int i = 0;i<code.length;i++) result[i] = pre[i+k]-pre[i];
+        return result;
+    }
+}

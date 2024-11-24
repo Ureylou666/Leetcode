@@ -96,21 +96,66 @@ class main {
     public static void main(String[] args) {
         // String grid2 = "[[0,0,0,0,0],[1,1,1,1,1],[0,1,0,1,0],[0,1,0,1,0],[1,0,0,0,1]]";
         //out.println( Math.pow(2,20) );
-        out.println( getMaximumXor( new int[]{0,1,1,3}, 2 ) ) ;
+        out.println( ( minSetSize( new int[]{1000,1000,3,7}) )) ;
     }
 
-    public static int[] getMaximumXor(int[] nums, int maximumBit) {
-        int[] result = new int[nums.length];
-        int sum = nums[0];
-        int index = nums.length-1;
-        int max = (int) Math.pow(2, maximumBit) - 1;
-        while (index >= 0) {
-            result[index] = sum ^ max;
-            index--;
-            if (index >=0) sum = sum ^ nums[nums.length - 1 - index];
+    public static TreeNode buildTree(int[] preorder, int[] inorder) {
+
+    }
+
+    public static String countOfAtoms(String formula) {
+        HashMap<String, Integer> map = new HashMap<>();
+        int index = 0, i = 0, count = 0;
+        Stack<Character> stack = new Stack<>();
+        while (i<formula.length() ){
+            while (i<formula.length() && formula.charAt(i) != '(') i++;
+            calc(map, formula.substring(index,i),1);
+            if (i==formula.length()) break;
+
         }
-        return result;
+        calc(map, formula, 1);
+        return "";
     }
 
-
+    private static void calc(HashMap<String, Integer> map, String s, int amount){
+        HashMap<String , Integer> temp = new HashMap<>();
+        int index = 0, i = 0, count = 0;
+        while (i<=s.length() && index<s.length()) {
+            if (i == s.length()) if (index<s.length()){
+                String tempStr = s.substring(index, i);
+                count = 1;
+                if (temp.containsKey(tempStr)) {
+                    count = count + temp.get(tempStr);
+                    temp.put(tempStr, count);
+                } else temp.put(tempStr, count);
+                break;
+            } else break;
+            if ( (s.charAt(i) - 'A' >= 0 && Math.abs('Z'-s.charAt(i)) < 26)  || (s.charAt(i) - 'a' >= 0 && Math.abs('z'-s.charAt(i)) < 26))  i++;
+            else {
+                String tempStr = s.substring(index, i);
+                count = 0;
+                if ( (s.charAt(i)- '0' < 0 && '9'- s.charAt(i) > 9) ) count = 1; else {
+                    while ( i< s.length() &&( s.charAt(i)-'0' >=0 && Math.abs('9'- s.charAt(i)) < 10) ) {
+                        count = count *10 + s.charAt(i) - '0';
+                        i++;
+                    }
+                }
+                index = i;
+                if (temp.containsKey(tempStr)) {
+                    count = count + temp.get(tempStr);
+                    temp.put(tempStr, count);
+                } else temp.put(tempStr, count);
+            }
+        }
+        for (String str : temp.keySet()) {
+            count = temp.get(str) * amount;
+            temp.put(str, count);
+        }
+        for (String str : temp.keySet()) {
+            if (map.containsKey(str)) {
+                count = map.get(str) + temp.get(str);
+                map.put(str, count);
+            } else map.put(str, temp.get(str));
+        }
+    }
 }

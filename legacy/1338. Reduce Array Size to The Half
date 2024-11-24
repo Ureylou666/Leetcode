@@ -1,0 +1,20 @@
+class Solution {
+    public int minSetSize(int[] arr) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int i : arr) map.put(i, map.getOrDefault(i,0)+1);
+
+        TreeMap<Integer, Integer> treeMap = new TreeMap<>((key1, key2)->{
+            int compare = map.get(key2) - map.get(key1);
+            return compare !=0 ? compare : key1 - key2;
+        });
+
+        treeMap.putAll(map);
+        int count = 0, result = 0;
+        for (int key : treeMap.keySet()) {
+            count++;
+            result += treeMap.get(key);
+            if (result >= arr.length/2) return count;
+        }
+        return count;
+    }
+}

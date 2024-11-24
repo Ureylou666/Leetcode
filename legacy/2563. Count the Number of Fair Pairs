@@ -1,0 +1,15 @@
+class Solution {
+    public long countFairPairs(int[] nums, int lower, int upper) {
+        Arrays.sort(nums);
+        long count = 0;
+        for (int i = 0; i<nums.length-1; i++) {
+            int left = i+1 , right = nums.length-1;
+            if (nums[i] + nums[right] < lower) continue;
+            if (nums[i] + nums[left] > upper) break;
+            while (left < nums.length && nums[i] + nums[left] < lower) left++;
+            while (right >= left && nums[i] + nums[right] > upper) right--;
+            if (left <= right) count += right -left + 1;
+        }
+        return count;
+    }
+}

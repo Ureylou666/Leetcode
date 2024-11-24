@@ -1,0 +1,16 @@
+class Solution {
+    public int countSubstrings(String s, String t) {
+        int n = s.length(), m = t.length();
+       int[][][] dp = new int[n][m][n+1];
+       int result = 0;
+
+       for (int k = 1; k <= n; k++)
+           for (int i = 0; i<=n-k; i++)
+               for (int j = 0; j<=m-k; j++) {
+                   if (s.charAt(i+k-1) != t.charAt(j+k-1)) dp[i][j][k] = dp[i][j][k-1] + 1; else dp[i][j][k] = dp[i][j][k-1];
+                   if (dp[i][j][k] == 1) result++;
+               }
+        return result;
+    }
+
+}

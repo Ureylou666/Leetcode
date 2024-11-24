@@ -1,0 +1,16 @@
+class Solution {
+    public int minCost(String colors, int[] neededTime) {
+        int index = 0, result = 0;
+        while (index < colors.length()) {
+            int count = 0, max = 0;
+            char c = colors.charAt(index);
+            while (index < colors.length() && c == colors.charAt(index)) {
+                count += neededTime[index];
+                max = Math.max(max, neededTime[index]);
+                index++;
+            }
+            result += count - max;
+        }
+        return result;
+    }
+}

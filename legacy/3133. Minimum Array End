@@ -1,0 +1,17 @@
+class Solution {
+    public long minEnd(int n, int x) {
+        char[] result = Integer.toBinaryString(x).toCharArray();
+        char[] temp = Integer.toBinaryString(n-1).toCharArray();
+        StringBuilder sb = new StringBuilder();
+        int index = temp.length-1;
+        for (int i = result.length-1; i>=0; i--)
+            if (result[i] == '0') {
+                if (index>=0) {
+                    sb.append(temp[index]);
+                    index--;
+                } else sb.append('0');
+            } else sb.append('1');
+        for (int i = index; i>=0; i--) sb.append(temp[i]);
+        return Long.valueOf(sb.reverse().toString(), 2);
+    }
+}
